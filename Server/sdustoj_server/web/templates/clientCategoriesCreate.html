@@ -1,0 +1,63 @@
+{% extends "clientInstanceBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}添加可访问题库{% endblock %}
+
+{% block nav_categories %}active{% endblock %}
+
+{% block sub_content2 %}
+<div class="container row col-lg-8 col-md-7">
+  <div class="col-12">
+    <form id="clientRelationCreate" method="POST" onsubmit="save();return false;">
+      <fieldset>
+        {% csrf_token %}
+        <div class="form-group row">
+          <label class="col-lg-3 col-md-4 control-label">对外可用</label>
+          <div class="col-lg-9 col-md-8">
+            <select name="available" class="form-control">
+              <option value="true" selected="selected">可用</option>
+              <option value="false">不可用</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-3 col-md-4 control-label">题库ID</label>
+          <div class="col-lg-9 col-md-8">
+            <input name="category_id" class="form-control" type="number">
+          </div>
+        </div>
+        <br/>
+        <div class="input-group-btn">
+          <button class="btn btn-primary" title="保存信息">保 存</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function save() {
+  var form = $("#clientRelationCreate")
+  var data = getFormData(form)
+
+  $.ajax({
+    type: "POST",
+    async: false,
+    url: "{% url 'admin-clients-categories-list' client.id %}",
+    data: data,
+    dataType: 'json',
+    success: function(ret) {
+      url = "{% url 'client_categories' client.id %}" + ret.id
+      location.href = url
+    },
+    error: function(a, b, c) {
+      test_output(a)
+    }
+  })
+
+  return false
+}
+</script>
+{% endblock %}

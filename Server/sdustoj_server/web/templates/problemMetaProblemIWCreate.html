@@ -1,0 +1,63 @@
+{% extends "problemMetaProblemBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}创建禁用单词{% endblock %}
+
+{% block nav_problem_iw %}active{% endblock %}
+
+{% block sub_content2 %}
+<div class="container row justify-content-sm-center container col-lg-8 col-md-7">
+  <div class="col-12">
+    <form id="descriptionCreateForm" method="POST" onsubmit="iSubmit();return false;">
+      <fieldset>
+        {% csrf_token %}
+        <div class="form-group row">
+          <label class="col-lg-3 col-md-4 control-label">对外可用</label>
+          <div class="col-lg-9 col-md-8">
+            <select name="available" class="form-control" datatype="number">
+              <option value="true" selected="selected">可用</option>
+              <option value="false">不可用</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-3 col-md-4 control-label">单词</label>
+          <div class="col-lg-9 col-md-8">
+            <input maxlength="128" name="word" class="form-control" type="text">
+          </div>
+        </div>
+        <br/>
+        <div class="input-group-btn">
+          <button class="btn btn-primary" title="保存">保 存</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function iSubmit() {
+  var form = $("#descriptionCreateForm")
+  var data = getFormData(form)
+
+  $.ajax({
+    type: "POST",
+    async: false,
+    url: "{% url 'admin-meta-problem-invalid-words-list' meta_problem.id problem.id %}",
+    data: data,
+    dataType: 'json',
+    success: function(ret) {
+      url = "{% url 'problem_meta_problem_iw' meta_problem.id problem.id %}"
+      location.href = url
+    },
+    error: function(a, b, c) {
+      test_output(a)
+    }
+  })
+
+  return false
+}
+</script>
+{% endblock %}

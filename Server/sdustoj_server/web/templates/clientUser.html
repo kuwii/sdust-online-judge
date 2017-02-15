@@ -1,0 +1,40 @@
+{% extends "clientBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}用户端账户{% endblock %}
+
+{% block nav_client_user %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+    <div id="categories"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+drf_sat_adapter.init_sat_table({
+  id: "categories",
+  url: "{% url 'admin-client-users-list' %}",
+  title: "用户端账户列表",
+  base_url: "{% url 'client_users' %}instance/",
+  create_url: "{% url 'client_user_create' %}",
+  column: [
+    { name: "username", caption: "账户名", sort: true, type: "link", key: "username", ordering: 1 },
+    { name: "last_name", caption: "姓" },
+    { name: "first_name", caption: "名" },
+    { name: "email", caption: "电子邮件" },
+    { name: "is_active", caption: "是否可用" },
+    { name: "date_joined", caption: "创建", sort: true, type: "datetime", ordering: 0 },
+    { name: "last_login", caption: "最后登录", sort: true, type: "datetime", ordering: 0 }
+  ],
+  filter: [
+    { name: "creator", type: "text", placeholder: "用户名", caption: "创建者" },
+    { name: "updater", type: "text", placeholder: "用户名", caption: "更新者" },
+  ]
+})
+
+</script>
+{% endblock %}

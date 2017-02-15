@@ -1,0 +1,108 @@
+{% extends "adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}提交记录{% endblock %}
+
+{% block nav_problem %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <h3>提交 - {{ submission.id }}</h3>
+  <br>
+  <h4>提交信息</h4>
+  <table class="table">
+    <tr class="col-12 row">
+      <td class="col-4"><b>提交ID</b></td>
+      <td class="col-8">{{ submission.id }}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>题目</b></td>
+      <td class="col-8">{{ submission.problem.id }}: {{ submission.problem.title }}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>语言</b></td>
+      <td class="col-8">{{ submission.environment.name }}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>用户</b></td>
+      <td class="col-8">{% if submission.user %}{{ submission.user }}{% endif %}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>竞赛</b></td>
+      <td class="col-8">{% if submission.contest %}{{ submission.contest }}{% endif %}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>用户端</b></td>
+      <td class="col-8">{% if submission.client %}{{ submission.client }}{% endif %}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>提交IP</b></td>
+      <td class="col-8">{% if submission.ip %}{{ submission.ip }}{% endif %}</td>
+    </tr>
+  </table>
+  <br>
+  <h4>评测信息</h4>
+  <table class="table">
+    <tr class="col-12 row">
+      <td class="col-4"><b>评测状态</b></td>
+      <td class="col-8">{{ submission.get_status_display }}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>时间</b></td>
+      <td class="col-8">{{ submission.time }}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>内存</b></td>
+      <td class="col-8">{{ submission.time }}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>长度</b></td>
+      <td class="col-8">{{ submission.time }}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>评测机</b></td>
+      <td class="col-8">{% if submission.judge %}{{ submission.judge }}{% endif %}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>编译信息</b></td>
+      <td class="col-8">{% if submission.compile_info.info %}{{ submission.compile_info.info }}{% endif %}</td>
+    </tr>
+    <tr class="col-12 row">
+      <td class="col-4"><b>详细数据</b></td>
+      <td class="col-8">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>测试数据ID</th>
+              <th>时间</th>
+              <th>内存</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for i, j in submission.test_data_status.status.items %}
+            <tr>
+              <td>{{ i }}</td>
+              <td>{{ j.time }}</td>
+              <td>{{ j.memory }}</td>
+              <td>{{ j.status }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <h4>代码</h4>
+  <div class="jumbotron">
+      {{ submission.code.code.code }}
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+
+</script>
+{% endblock %}

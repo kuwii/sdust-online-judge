@@ -1,0 +1,36 @@
+{% extends "problemMetaProblemBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}选用的测试数据{% endblock %}
+
+{% block nav_problem_test %}active{% endblock %}
+
+{% block sub_content2 %}
+<div class="container row justify-content-sm-center container col-lg-8 col-md-7">
+  <div class="col-12">
+    <form id="descriptionCreateForm" action="{% url 'admin-meta-problem-test-data-detail' meta_problem.id problem.id test.id %}" data-method="PUT" enctype="multipart/form-data" class="form-horizontal">
+      <fieldset>
+        {% csrf_token %}
+        <div class="form-group row">
+          <label class="col-lg-3 col-md-4 control-label">对外可用</label>
+          <div class="col-lg-9 col-md-8">
+            <select name="available" class="form-control" datatype="number">
+              {% if test.available %}
+              <option value="true" selected="selected">可用</option>
+              <option value="false">不可用</option>
+              {% else %}
+              <option value="true">可用</option>
+              <option value="false" selected="selected">不可用</option>
+              {% endif %}
+            </select>
+          </div>
+        </div>
+        <br/>
+        <div class="input-group-btn">
+          <button class="btn btn-primary" title="保存">保 存</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+{% endblock %}

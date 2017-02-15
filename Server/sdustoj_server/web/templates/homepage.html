@@ -1,0 +1,22 @@
+{% extends "basic.html" %}
+{% load staticfiles %}
+
+{% block title %}首页{% endblock %}
+
+{% block page_head %}
+<div class="div-page-head-lg clearfix" id="content">
+  <div class="container appear-ani">
+    <div class="row">
+      <div class="col-md-xs-6">
+        <img class="hidden-sm-down" width="200" src='{% static "img/SDUST_LOGO_LG.gif" %}' />
+        <img class="hidden-md-up" width="100" src='{% static "img/SDUST_LOGO.gif" %}' />
+      </div>
+      <div class="col-md-xs-6">
+        <h1 class="display-1 homepage-text hidden-md-down">欢迎</h1>
+        <h1 class="display-2 homepage-text hidden-sm-down hidden-lg-up">欢迎</h1>
+        <h2 class="homepage-text hidden-md-up">欢迎</h2>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

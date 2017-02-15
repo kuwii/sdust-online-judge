@@ -1,0 +1,21 @@
+{% extends "adminBasic.html" %}
+{% load staticfiles %}
+
+{% block sub_nav %}
+<li class="nav-item">
+  <a class="nav-link {% block nav_home %}{% endblock %}" href="{% url 'problem_home' %}">首页</a>
+</li>
+{% if 'ProblemAdmin' in user.group or 'Root' in user.group %}
+<li class="nav-item">
+  <a class="nav-link {% block nav_meta_problem %}{% endblock %}" href="{% url 'problem_meta' %}">题元</a>
+</li>
+{% endif %}
+{% if 'CategoryAdmin' in group or 'ProblemAdmin' in user.group or 'Root' in user.group %}
+<li class="nav-item">
+  <a class="nav-link {% block nav_problem %}{% endblock %}" href="{% url 'problem_problem' %}">题目</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link {% block nav_category %}{% endblock %}" href="{% url 'problem_category' %}">题库</a>
+</li>
+{% endif %}
+{% endblock %}

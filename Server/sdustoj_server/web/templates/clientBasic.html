@@ -1,0 +1,11 @@
+{% extends "adminBasic.html" %}
+{% load staticfiles %}
+
+{% block sub_nav %}
+<li class="nav-item">
+  <a class="nav-link {% block nav_client_user %}{% endblock %}" href="{% url 'client_users' %}">用户端账户</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link {% block nav_client %}{% endblock %}" href="{% url 'client_clients' %}">用户端</a>
+</li>
+{% endblock %}

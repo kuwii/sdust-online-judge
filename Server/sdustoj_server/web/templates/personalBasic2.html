@@ -1,0 +1,29 @@
+{% extends "personalBasic.html" %}
+{% load staticfiles %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="row justify-content-sm-center">
+    <div class="col-lg-3 col-md-4">
+      <div class="container">
+        <h1>{{ user.user.username }}</h1>
+        <h4>
+          {% if user.user.first_name != '' or user.user.last_name != '' %}
+            {{ user.user.last_name }} {{ user.user.first_name }}
+          {% else %}
+            尚未设置姓名
+          {% endif %}
+        </h4>
+        <br/>
+        <br/>
+        <p>注册时间：<br><small>{{ user.user.date_joined }}</small></p>
+        <p>上次登录：<br><small>{{ user.user.last_login }}</small></p>
+      </div>
+      <br class="hidden-md-up">
+      <br class="hidden-md-up">
+    </div>
+    <div class="nav-divider hidden-sm-down"></div>
+    {% block sub_content2 %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "adminBasic.html" %}
+{% load staticfiles %}
+
+{% block sub_nav %}
+<li class="nav-item">
+  <a class="nav-link {% block nav_personal_info %}{% endblock %}" href="{% url 'personal-info-page' %}">个人信息</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link {% block nav_edit_info %}{% endblock %}" href="{% url 'personal-edit-page' %}">编辑信息</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link {% block nav_change_password %}{% endblock %}" href="{% url 'personal-password-page' %}">修改密码</a>
+</li>
+{% endblock %}

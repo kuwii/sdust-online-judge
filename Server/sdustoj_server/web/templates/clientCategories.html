@@ -1,0 +1,38 @@
+{% extends "clientInstanceBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}可访问题库{% endblock %}
+
+{% block nav_categories %}active{% endblock %}
+
+{% block sub_content2 %}
+<div class="container col-lg-8 col-md-7">
+  <div class="col-xs-12">
+    <div id="categories"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+drf_sat_adapter.init_sat_table({
+  id: "categories",
+  url: "{% url 'admin-clients-categories-list' client.id %}",
+  title: "可访问题库列表",
+  base_url: "{% url 'client_categories' client.id %}",
+  create_url: "{% url 'client_categories_create' client.id %}",
+  column: [
+    { name: "id", caption: "ID", sort: true, type: "link", key: "id", ordering: 1 },
+    { name: "category_id", caption: "题库ID" },
+    { name: "create_time", caption: "创建", sort: true, type: "datetime", ordering: 0 },
+    { name: "update_time", caption: "更新", sort: true, type: "datetime", ordering: 0 },
+    { name: "available", caption: "可用", sort: true, ordering: 0 },
+  ],
+  filter: [
+    { name: "creator", type: "text", placeholder: "用户名", caption: "创建者" },
+    { name: "updater", type: "text", placeholder: "用户名", caption: "更新者" },
+  ]
+})
+
+</script>
+{% endblock %}

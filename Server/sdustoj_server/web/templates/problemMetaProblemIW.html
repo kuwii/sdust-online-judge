@@ -1,0 +1,36 @@
+{% extends "problemMetaProblemBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}禁用单词集{% endblock %}
+
+{% block nav_problem_iw %}active{% endblock %}
+
+{% block sub_content2 %}
+<div class="container col-lg-8 col-md-7">
+  <div class="col-xs-12">
+    <div id="problem"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+drf_sat_adapter.init_sat_table({
+  id: "problem",
+  url: "{% url 'admin-meta-problem-invalid-words-list' meta_problem.id problem.id %}",
+  create_url: "{% url 'problem_meta_problem_iw_create' meta_problem.id problem.id %}",
+  title: "禁用单词集",
+  base_url: "{% url 'problem_meta_problem_iw' meta_problem.id problem.id %}",
+  column: [
+    { name: "id", caption: "ID", sort: true, type: "link", key: "id", ordering: 1 },
+    { name: "word", caption: "单词", sort: true, type: "link", key: "id", ordering: 0 },
+    { name: "create_time", caption: "创建", sort: true, type: "datetime", ordering: 0 },
+    { name: "update_time", caption: "更新", sort: true, type: "datetime", ordering: 0 },
+  ],
+  filter: [
+    { name: "creator", type: "text", placeholder: "用户名", caption: "创建者" },
+    { name: "updater", type: "text", placeholder: "用户名", caption: "更新者" },
+  ]
+})
+</script>
+{% endblock %}
