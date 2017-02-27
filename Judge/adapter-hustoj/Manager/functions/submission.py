@@ -11,6 +11,8 @@ from models.redis_models import Submission
 
 from .log import print_log
 
+from conf import judger_id
+
 PgSession = sessionmaker(bind=pg_models.engine)
 pg_session = PgSession()
 
@@ -133,7 +135,7 @@ def _handler(sid):
     pg_session.commit()
 
     submission = pg_session.query(pg_models.Submission).filter_by(id=sid).first()
-    submission.judge_id = datetime.now()
+    submission.judge_id = judger_id
     if not finished:
         Submission.push(sid)
         submission.status = status_map[max_status]

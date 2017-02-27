@@ -57,6 +57,11 @@ def is_user_admin(info):
     return GROUP_NAME_USER_ADMIN in group or GROUP_NAME_ROOT in group
 
 
+def is_judge_admin(info):
+    group = info['group']
+    return GROUP_NAME_JUDGE_ADMIN in group or GROUP_NAME_ROOT in group
+
+
 # == Views =============================================================================================================
 
 def to_home(request):
@@ -936,6 +941,101 @@ def submit_problem(request, pid):
         'user': info,
         'problem': prob,
         'envs': environments
+    })
+
+
+def environments(request):
+    info = user_info(request)
+
+    if not info['is_authenticated']:
+        return redirect(reverse('login_page'))
+
+    if not is_judge_admin(info):
+        return redirect(reverse('homepage'))
+
+    return render(request, 'environments.html', {
+        'user': info
+    })
+
+
+def environment_create(request):
+    info = user_info(request)
+
+    if not info['is_authenticated']:
+        return redirect(reverse('login_page'))
+
+    if not is_judge_admin(info):
+        return redirect(reverse('homepage'))
+
+    return render(request, 'environmentCreate.html', {
+        'user': info
+    })
+
+
+def environment_instance(request, eid):
+    info = user_info(request)
+
+    if not info['is_authenticated']:
+        return redirect(reverse('login_page'))
+
+    if not is_judge_admin(info):
+        return redirect(reverse('homepage'))
+
+    env = get_object_or_404(Environment.objects.all(), id=int(eid))
+
+    return render(request, 'environmentInstance.html', {
+        'user': info,
+        'env': env
+    })
+
+
+def judges(request):
+    info = user_info(request)
+
+    if not info['is_authenticated']:
+        return redirect(reverse('login_page'))
+
+    if not is_judge_admin(info):
+        return redirect(reverse('homepage'))
+
+    return render(request, 'judges.html', {
+        'user': info
+    })
+
+
+def judge_create(request):
+    info = user_info(request)
+
+    if not info['is_authenticated']:
+        return redirect(reverse('login_page'))
+
+    if not is_judge_admin(info):
+        return redirect(reverse('homepage'))
+
+    return render(request, 'judgeCreate.html', {
+        'user': info
+    })
+
+
+def judge_instance(request, jid):
+    info = user_info(request)
+
+    if not info['is_authenticated']:
+        return redirect(reverse('login_page'))
+
+    if not is_judge_admin(info):
+        return redirect(reverse('homepage'))
+
+    judge = get_object_or_404(Judge.objects.all(), id=int(jid))
+    env = Environment.objects.filter(deleted=False).order_by('id')
+    judge_environments = judge.environment.all()
+
+    return render(request, 'judgeInstance.html', {
+        'user': info,
+        'jid': jid,
+        'judge': judge,
+        'environments': env,
+        'judge_environments': judge_environments
     })
 
 

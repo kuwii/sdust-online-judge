@@ -1,0 +1,61 @@
+{% extends "judgeBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}创建编程环境{% endblock %}
+
+{% block nav_env %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+    <div id="envs"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function getOptions(ret) {
+  var results = ret.results
+  var data = []
+  for (var i in results) {
+    var obj = results[i]
+    var text = obj.id + ': ' + obj.name + ' (' + obj.judge_id + ')'
+    var value = obj.id
+    data.push({ text: text, value: value })
+  }
+  return data
+}
+
+SATable.SimpleAjaxForm({
+  id: 'envs',
+  method: 'POST',
+  toSuccess: '{% url 'web-environments' %}',
+  url: '{% url 'admin-environments-list' %}',
+  items: [
+    {
+      name: 'available',
+      caption: '可用',
+      type: 'Boolean',
+      defaultTrue: true
+    },
+    {
+      name: 'name',
+      caption: '名称',
+      type: 'Text',
+      typeInfo: {
+        max_length: 128
+      }
+    },
+    {
+      name: 'judge_id',
+      caption: '评测ID',
+      type: 'Text',
+      typeInfo: {
+        max_length: 16
+      }
+    }
+  ]
+})
+</script>
+{% endblock %}

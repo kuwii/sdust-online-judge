@@ -1,0 +1,38 @@
+{% extends "judgeBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}编程环境{% endblock %}
+
+{% block nav_env %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+    <div id="envs"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.DRFTable({
+  id: 'envs',
+  title: '编程环境',
+  url: '{% url 'admin-environments-list' %}',
+  search: true,
+  filters: [
+    { name: 'creator', type: 'text', placeholder: '请输入创建者用户名', caption: '创建者' },
+    { name: 'updater', type: 'text', placeholder: '请输入更新者用户名', caption: '更新者' }
+  ],
+  columns: [
+    { name: 'id', caption: 'ID', sort: true, ordering: 1, type: 'Link', typeInfo: { base_url: '{% url 'web-environments' %}', key: 'id' } },
+    { name: 'name', caption: '名称', sort: true, type: 'Link', typeInfo: { base_url: '{% url 'web-environments' %}', key: 'id' } },
+    { name: 'judge_id', caption: '评测ID', sort: true, type: 'Link', typeInfo: { base_url: '{% url 'web-environments' %}', key: 'id' } },
+    { name: 'info', caption: '信息', sort: true, type: 'Text' },
+    { name: 'create_time', caption: '创建时间', sort: true, type: 'Datetime' },
+    { name: 'update_time', caption: '更新时间', sort: true, type: 'Datetime' },
+  ],
+  createURL: '{% url 'web-environment-create' %}'
+})
+</script>
+{% endblock %}

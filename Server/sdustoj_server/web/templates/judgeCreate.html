@@ -1,0 +1,82 @@
+{% extends "judgeBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}创建评测机{% endblock %}
+
+{% block nav_judge %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+    <div id="judges"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function getOptions(ret) {
+  var results = ret.results
+  var data = []
+  for (var i in results) {
+    var obj = results[i]
+    var text = obj.id + ': ' + obj.name + ' (' + obj.judge_id + ')'
+    var value = obj.id
+    data.push({ text: text, value: value })
+  }
+  return data
+}
+
+SATable.SimpleAjaxForm({
+  id: 'judges',
+  method: 'POST',
+  toSuccess: '{% url 'web-judges' %}',
+  url: '{% url 'admin-judges-list' %}',
+  items: [
+    {
+      name: 'available',
+      caption: '可用',
+      type: 'Boolean',
+      defaultTrue: true
+    },
+    {
+      name: 'name',
+      caption: '名称',
+      type: 'Text',
+      typeInfo: {
+        max_length: 128
+      }
+    },
+    {
+      name: 'info',
+      caption: '信息',
+      type: 'Text'
+    },
+    {
+      name: 'cmd_queue',
+      caption: '命令消息队列',
+      type: 'Text',
+      typeInfo: {
+        max_length: 64
+      }
+    },
+    {
+      name: 'environment',
+      caption: '支持的编程环境',
+      type: 'Select',
+      typeInfo: {
+        many: true,
+        ajax: true,
+        ajaxInfo: {
+          type: 'GET',
+          url: '{% url 'admin-environments-list' %}',
+          dataType: 'json'
+        },
+        responseHandler: SATable.DRF.keepRequest,
+        dataGenerator: getOptions
+      }
+    }
+  ]
+})
+</script>
+{% endblock %}

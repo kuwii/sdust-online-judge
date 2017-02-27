@@ -74,5 +74,11 @@ url_patterns = [
     url(r'^client-users/instance/(\S+)/', client_user_instance, name='client_user_instance'),
     url(r'^users/$', users, name='users'),
     url(r'^users/create', user_create, name='user_create'),
+    url(r'^environments/$', environments, name='web-environments'),
+    url(r'^environments/create/$', environment_create, name='web-environment-create'),
+    url(r'^environments/(\d+)/$', environment_instance, name='web-environment-instance'),
+    url(r'^judges/$', judges, name='web-judges'),
+    url(r'^judges/create/$', judge_create, name='web-judge-create'),
+    url(r'^judges/(\d+)/$', judge_instance, name='web-judge-instance'),
     url(r'^users/instance/(\S+)/', user_instance, name='user_instance'),
 ]

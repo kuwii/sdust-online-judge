@@ -87,10 +87,10 @@ admin_router.register(
 )
 # == Environment =======================================================================================================
 admin_router.register(
-    r'environments', EnvironmentViewSets.EnvironmentAdminViewSet, base_name='environments'
+    r'environments', EnvironmentViewSets.EnvironmentAdminViewSet, base_name='admin-environments'
 )
 admin_router.register(
-    r'judges', EnvironmentViewSets.JudgeAdminViewSet, base_name='judges'
+    r'judges', EnvironmentViewSets.JudgeAdminViewSet, base_name='admin-judges'
 )
 # == Submission ========================================================================================================
 admin_router.register(

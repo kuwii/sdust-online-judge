@@ -68,7 +68,13 @@ class EnvironmentSerializers:
         class Meta:
             model = Judge
             fields = '__all__'
-            read_only_fields = _RESOURCE_READONLY + ('last_update',)
+            read_only_fields = _RESOURCE_READONLY + ('last_update', )
+            extra_kwargs = {
+                'environment': {
+                    'required': False,
+                    'allow_null': True
+                }
+            }
 
 
 class MetaProblemSerializers:

@@ -23,6 +23,11 @@
           <a class="nav-link" href="{% url 'problem_home' %}">管理题库</a>
         </li>
         {% endif %}
+        {% if 'Root' in user.group or 'JudgeAdmin' in user.group %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'web-judges' %}">管理评测</a>
+        </li>
+        {% endif %}
         {% if 'Root' in user.group or 'ClientAdmin' in user.group %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'client_clients' %}">管理用户端</a>

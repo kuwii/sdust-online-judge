@@ -37,7 +37,7 @@ from .filters import EnvironmentAdminFilter
 from .filters import UserAdminFilter
 from .filters import SubmissionFilters
 
-from .judge import update_problem, update_meta, publish_submission
+from .judge import update_problem, update_meta, update_all, publish_submission
 
 
 class MetaProblemViewSets:
@@ -563,6 +563,7 @@ class EnvironmentViewSets:
                 for limit in limits:
                     bulk_create.append(ProblemLimitJudge(limit=limit, problem=limit.problem, judge=instance))
             ProblemLimitJudge.objects.bulk_create(bulk_create)
+            update_all(instance)
             return instance
 
         def perform_update(self, serializer):
@@ -580,6 +581,7 @@ class EnvironmentViewSets:
                 for limit in limits:
                     bulk_create.append(ProblemLimitJudge(limit=limit, problem=limit.problem, judge=instance))
             ProblemLimitJudge.objects.bulk_create(bulk_create)
+            update_all(instance)
             return instance
 
         def perform_destroy(self, instance):

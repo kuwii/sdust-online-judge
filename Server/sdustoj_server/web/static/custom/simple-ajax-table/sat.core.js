@@ -3,10 +3,20 @@ var SATable = {}
 SATable.getFormData = function(form) {
   var array = $(form).serializeArray()
   var data = {}
-  for(var i in array) {
+  for (var i in array) {
     var it = array[i]
-    data[it.name] = it.value
+    if (data[it.name]) {
+      if (!(data[it.name] instanceof Array)) {
+        var oldValue = data[it.name]
+        data[it.name] = []
+        data[it.name].push(oldValue)
+      }
+      data[it.name].push(it.value)
+    } else {
+      data[it.name] = it.value
+    }
   }
+
   return data
 }
 
@@ -93,11 +103,21 @@ SATable.getDom.ButtonSubmit = function(name) {
   $(span).append(btn)
   return span
 }
-SATable.getDom.AButton = function(name, href, class_) {
-  var a = $('<a class="btn btn-primary" href="javascript:void(0)"></a>')
+SATable.getDom.A = function(name, href, class_) {
+  var a = $('<a></a>')
   if (name) {
     $(a).text(name)
   }
+  if (href) {
+    $(a).attr('href', href)
+  }
+  if (class_) {
+    $(a).addClass(class_)
+  }
+  return a
+}
+SATable.getDom.AButton = function(name, href, class_) {
+  var a = SATable.getDom.A(name, 'javascript:void(0)', 'btn btn-primary')
   if (href) {
     $(a).attr('href', href)
   }
@@ -189,6 +209,13 @@ SATable.getDom.Ul = function(class_) {
   }
   return ul
 }
+SATable.getDom.Li = function(class_) {
+  var li = $('<li></li>')
+  if (class_) {
+    $(li).addClass(class_)
+  }
+  return li
+}
 SATable.getDom.Table = function(class_) {
   var table = $('<table class="table table-hover"></table>')
   if (class_) {
@@ -224,12 +251,85 @@ SATable.getDom.Td = function(class_) {
   }
   return td
 }
+SATable.getDom.Th = function(class_) {
+  var th = $('<th></th>')
+  if (class_) {
+    $(th).addClass(class_)
+  }
+  return th
+}
 SATable.getDom.IconLoading = function(class_) {
   var icon = $('<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>')
   if (class_) {
     $(icon).addClass(class_)
   }
   return icon
+}
+SATable.getDom.IconDown = function(class_) {
+  var icon = $('<i class="fa fa-chevron-circle-down fa-fw"></i>')
+  if (class_) {
+    $(icon).addClass(class_)
+  }
+  return icon
+}
+SATable.getDom.IconUp = function(class_) {
+  var icon = $('<i class="fa fa-chevron-circle-up fa-fw"></i>')
+  if (class_) {
+    $(icon).addClass(class_)
+  }
+  return icon
+}
+SATable.getDom.IconLast = function(class_) {
+  var icon = $('<i class="fa fa-angle-left"></i>')
+  if (class_) {
+    $(icon).addClass(class_)
+  }
+  return icon
+}
+SATable.getDom.IconNext = function(class_) {
+  var icon = $('<i class="fa fa-angle-right"></i>')
+  if (class_) {
+    $(icon).addClass(class_)
+  }
+  return icon
+}
+SATable.getDom.IconNoDirection = function(class_) {
+  var icon = $('<i class="fa fa-minus-circle fa-fw"></i>')
+  if (class_) {
+    $(icon).addClass(class_)
+  }
+  return icon
+}
+SATable.getDom.IconYes = function(class_) {
+  var icon = $('<i class="fa fa-check fa-fw"></i>')
+  if (class_) {
+    $(icon).addClass(class_)
+  }
+  return icon
+}
+SATable.getDom.IconNo = function(class_) {
+  var icon = $('<i class="fa fa-close fa-fw"></i>')
+  if (class_) {
+    $(icon).addClass(class_)
+  }
+  return icon
+}
+
+SATable.types = {}
+SATable.types.Boolean = function(content, column, info) {
+  return content ? SATable.getDom.IconYes : SATable.getDom.IconNo
+}
+SATable.types.Datetime = function(content, column, info) {
+  var date = new Date(content)
+  return date.toLocaleString()
+}
+SATable.types.Link = function(content, column, info) {
+  var typeInfo = column.typeInfo
+  var url = typeInfo.base_url + info[typeInfo.key] + '/'
+  return SATable.getDom.A(content, url)
+}
+SATable.types.Text = function(content, column, info) {
+  return content
 }
 
 SATable.InputType = {
@@ -266,6 +366,10 @@ SATable.createFilterForm = function() {
   self.dom.filter.div = divContainer
   self.dom.filter.submit = btnSubmit
 
+  $(btnSubmit).click(function() {
+    self.update()
+  })
+
   return divContainer
 }
 
@@ -287,7 +391,7 @@ SATable.createHead = function() {
     self.dom.filter.button = btnFilter
   }
   if (self.createURL != null) {
-    var btnCreate = getDom.AButton('创建', 'javascript:void(0);')
+    var btnCreate = getDom.AButton('创建', self.createURL)
     $(divBtn).append(btnCreate)
   }
   $(divBetween).append(divTitle).append(divBtn)
@@ -333,9 +437,23 @@ SATable.createBarUp = function() {
     self.dom.search.form = form
     self.dom.search.input = input
     self.dom.search.submit = button
+
+    $(form).submit(function() {
+      self.update()
+    })
+    $(button).click(function() {
+      self.update()
+    })
   }
 
   return divBetween
+}
+
+SATable.getLimit = function() {
+  var self = this
+  var pageNumberData = SATable.getFormData(self.dom.pageNumber.form)
+  var pageNumber = pageNumberData.pageNumber
+  return pageNumber
 }
 
 SATable.createBarBottom = function() {
@@ -352,6 +470,8 @@ SATable.createBarBottom = function() {
 
   var formPageNumber = getDom.Form()
   var divSelect = getDom.InputSelect('pageNumber', '每页', [
+    { text: '1', value: '1' },
+    { text: '2', value: '2' },
     { text: '5', value: '5' },
     { text: '10', value: '10' },
     { text: '20', value: '20', selected: true },
@@ -364,6 +484,11 @@ SATable.createBarBottom = function() {
 
   self.dom.pageNumber.div = divPageNumber
   self.dom.pageNumber.form = formPageNumber
+
+  $(formPageNumber).change(function() {
+    self.limit = self.getLimit()
+    self.update()
+  })
 
   return divBetween
 }
@@ -407,6 +532,9 @@ SATable.initTable = function() {
   // bar bottom
   %(divContainer).append(self.createBarBottom())
 
+  // 每页显示结果数量
+  self.limit = self.getLimit()
+
   $('#' + self.id).append(divContainer)
 }
 
@@ -422,20 +550,22 @@ SATable.initData = function(tableInfo) {
   self.dataGenerator = tableInfo.dataGenerator
   self.page = tableInfo.page ? 1 : tableInfo.page
   self.createURL = tableInfo.createURL ? tableInfo.createURL : null
+  self.extraData = tableInfo.extraData ? tableInfo.extraData : {}
+  self.curPage = 1
+
+  var cols = self.columns
+  for (var i in cols) {
+    var col = cols[i]
+    if (col.sort && (col.ordering != -1 && col.ordering != 0 && col.ordering != 1)) {
+      col.ordering = 0
+    }
+  }
 
   var tableIDs = {}
   tableIDs.id = self.id + 'SAT'
   tableIDs.filterBtn = tableIDs.id + 'FB'
   tableIDs.filterDiv = tableIDs.id + 'FD'
   tableIDs.filterForm = tableIDs.id + 'F'
-  tableIDs.searchForm = tableIDs.id + 'SF'
-  tableIDs.searchInput = tableIDs.id + 'SI'
-  tableIDs.pageNumberForm = tableIDs.id + 'PNF'
-  tableIDs.pageNumber = tableIDs.id + 'PN'
-  tableIDs.pageClass = tableIDs.id + 'PC'
-  tableIDs.headTr = tableIDs.id + 'HT'
-  tableIDs.body = tableIDs.id + 'TB'
-  tableIDs.orderingBtn = tableIDs.id + 'OB'
   self.tableIDs = tableIDs
 
   var dom = {}
@@ -445,6 +575,108 @@ SATable.initData = function(tableInfo) {
   dom.table = {}
   dom.pageNumber = {}
   self.dom = dom
+}
+
+SATable.getPaginationLi = function(page, curPage) {
+  var getDom = this.getDom
+  var li = getDom.Li('page-item')
+  var a = getDom.A(page, 'javascript:void(0)', 'page-link')
+  $(li).append(a)
+  if (page == curPage) {
+    $(li).addClass('active')
+  }
+  return li
+}
+
+SATable.getPaginationLiIgnore = function() {
+  var getDom = SATable.getDom
+  var li = getDom.Li('page-item disabled')
+  var a = getDom.A('…', 'javascript:void(0)', 'page-link')
+  $(li).append(a)
+  return li
+}
+
+SATable.fillPagination = function(data) {
+  var self = this
+  var getDom = SATable.getDom
+
+  var curPage = self.curPage
+  var page_max = Math.ceil(data.count / self.limit)
+
+  var liLast = getDom.Li('page-item page-prev')
+  var liNext = getDom.Li('page-item page-next')
+  var aLast = getDom.A(i, 'javascript:void(0)', 'page-link')
+  var aNext = $(aLast).clone()
+  $(aLast).append(getDom.IconLast())
+  $(aNext).append(getDom.IconNext())
+  $(liLast).append(aLast)
+  $(liNext).append(aNext)
+
+  var ul = self.dom.pagination.up.ul
+  $(ul).append(liLast)
+  if (page_max <= 7) {
+    for (var i = 1; i <= page_max; ++i) {
+      ul.append(SATable.getPaginationLi(i, curPage))
+    }
+  } else if (curPage <= 3) {
+    for (var i = 1; i <= 4; ++i) {
+      ul.append(SATable.getPaginationLi(i, curPage))
+    }
+    ul.append(SATable.getPaginationLiIgnore)
+    ul.append(SATable.getPaginationLi(page_max, curPage))
+  } else if (curPage >= page_max - 2) {
+    ul.append(SATable.getPaginationLi(1, curPage))
+    ul.append(SATable.getPaginationLiIgnore)
+    for (var i = page_max - 3; i <= page_max; ++i) {
+      ul.append(SATable.getPaginationLi(i, curPage))
+    }
+  } else {
+    ul.append(SATable.getPaginationLi(1, curPage))
+    ul.append(SATable.getPaginationLiIgnore)
+    ul.append(SATable.getPaginationLi(curPage - 1, curPage))
+    ul.append(SATable.getPaginationLi(curPage, curPage))
+    ul.append(SATable.getPaginationLi(curPage + 1, curPage))
+    ul.append(SATable.getPaginationLiIgnore)
+    ul.append(SATable.getPaginationLi(page_max, curPage))
+  }
+  $(ul).append(liNext)
+
+  if (curPage == 1) {
+    $(liLast).addClass('disabled')
+  }
+  if (curPage == page_max) {
+    $(liNext).addClass('disabled')
+  }
+
+  var buttonsDom = $(self.dom.pagination.up.ul).children(':not(.page-prev):not(.page-next):not(.disabled)').find('.page-link')
+  $(buttonsDom).click(function() {
+    var number = parseInt($(this).text())
+    self.curPage = number
+    if (curPage != number) {
+      self.update()
+    }
+  })
+  $(aLast).click(function() {
+    if (curPage > 1) {
+      self.curPage -= 1
+      self.update()
+    }
+  })
+  $(aNext).click(function() {
+    if (curPage < page_max) {
+      self.curPage += 1
+      self.update()
+    }
+  })
+
+  var navBottom = $(self.dom.pagination.up.nav).clone(true)
+  $(self.dom.pagination.bottom.div).append(navBottom)
+}
+
+SATable.flushPagination = function() {
+  var self = this
+  $(self.dom.pagination.up.ul).empty()
+  $(self.dom.pagination.bottom.div).empty()
 }
 
 SATable.flushTable = function() {
@@ -465,13 +697,86 @@ SATable.setLoading = function() {
   $(self.dom.table.headTr).append(div)
 }
 
+SATable.fillTableHead = function() {
+  var self = this
+  var getDom = SATable.getDom
+  var columns = self.columns
+  var headTr = self.dom.table.headTr
+
+  for(var i in columns) {
+    var column = columns[i]
+    // 名称
+    var th = getDom.Th()
+    $(th).text(column.caption)
+    // 分析排序
+    if (column.sort) {
+      var icon = null
+      if (column.ordering == 1) {               // 升序
+        icon = getDom.IconUp()
+      } else if (column.ordering == -1) {       // 降序
+        icon = getDom.IconDown()
+      } else {                                  // 无序
+        icon = getDom.IconNoDirection()
+      }
+      var link = $('<a class="ordering" href="javascript:void(0)"></a>')
+      $(link).append(icon)
+      $(th).append(link)
+    }
+    $(headTr).append(th)
+  }
+
+  $(headTr).find('a.ordering').click(function() {
+    var index = $(this).parent().index()
+    var column = self.columns[index]
+    column.ordering += 1
+    if (column.ordering > 1) {
+      column.ordering = -1
+    }
+    self.update()
+  })
+}
+
+SATable.fillTableBody = function(data) {
+  var self = this
+  var getDom = SATable.getDom
+  var types = SATable.types
+  var body = self.dom.table.body
+
+  for (var i in data) {
+    var obj = data[i]
+    var tr = getDom.Tr()
+    var columns = self.columns
+    for (var j in columns) {
+      var column = columns[j]
+      var content = obj[column.name]
+      var ret = content
+      if (types[column.type]) {
+        ret = types[column.type](content, column, obj)
+      }
+      var td = getDom.Td()
+      $(td).append(ret)
+      $(tr).append(td)
+    }
+    $(body).append(tr)
+  }
+}
+
+SATable.fillTable = function(data) {
+  var self = this
+  self.flushPagination()
+  self.fillPagination(data)
+  self.flushTable()
+  self.fillTableHead()
+  self.fillTableBody(data.data)
+}
+
 SATable.getRequest = function() {
   var self = this
   var dom = self.dom
   var request = {}
 
   // 生成筛选信息
-  if (self.hasFilter) {
+  if (self.hasFilter()) {
     var filterData = SATable.getFormData(dom.filter.form)
     var filters = {}
     for (var i in filterData) {
@@ -484,7 +789,7 @@ SATable.getRequest = function() {
   }
 
   // 生成搜索信息
-  if (self.hasSearch) {
+  if (self.hasSearch()) {
     var searchData = SATable.getFormData(dom.search.form)
     var search = searchData.search
     if (search) {
@@ -492,16 +797,27 @@ SATable.getRequest = function() {
     }
   }
 
+  // 生成排序信息
+  var ordering = []
+  var columns = self.columns
+  for (var i in columns) {
+    var column = columns[i]
+    if (column.sort && column.ordering != 0) {
+      ordering.push((column.ordering == 1 ? '' : '-') + column.name)
+    }
+  }
+  if (ordering.length > 0) {
+    request.ordering = ordering
+  }
+
   // 获得每页显示结果数量
-  var pageNumberData = SATable.getFormData(dom.pageNumber.form)
-  var pageNumber = pageNumberData.pageNumber
-  request.limit = pageNumber
+  request.limit = self.limit
 
   // 获得欲显示的页数
   var curPage = self.curPage
   request.page = curPage ? curPage : 1
 
-
+  return request
 }
 
 SATable.update = function() {
@@ -509,9 +825,21 @@ SATable.update = function() {
   var getDom = getDom
   var dom = self.dom
 
+  // 显示载入界面
   self.setLoading()
 
-  self.getRequest()
+  // 获得数据
+  var request = self.requestGenerator(self.getRequest())
+  $.ajax({
+    type: request.type,
+    url: request.url,
+    dataType: request.dataType,
+    data: request.data,
+    success: function(ret) {
+      var data = self.dataGenerator(ret)
+      self.fillTable(data)
+    }
+  })
 }
 
 SATable.SimpleAjaxTable = function(tableInfo) {
@@ -523,7 +851,13 @@ SATable.SimpleAjaxTable = function(tableInfo) {
     createBarUp: SATable.createBarUp,
     createBarBottom: SATable.createBarBottom,
     createTable: SATable.createTable,
+    getLimit: SATable.getLimit,
+    fillTableHead: SATable.fillTableHead,
+    fillTableBody: SATable.fillTableBody,
+    fillTable: SATable.fillTable,
     flushTable: SATable.flushTable,
+    fillPagination: SATable.fillPagination,
+    flushPagination: SATable.flushPagination,
     getRequest: SATable.getRequest,
     initTable: SATable.initTable,
     initData: SATable.initData,
@@ -533,4 +867,6 @@ SATable.SimpleAjaxTable = function(tableInfo) {
   saTable.initData(tableInfo)
   saTable.initTable()
   saTable.update()
+
+  return saTable
 }
