@@ -1,14 +1,14 @@
 {% extends "problemBasic.html" %}
 {% load staticfiles %}
 
-{% block title %}创建题元{% endblock %}
+{% block title %}创建题库{% endblock %}
 
-{% block nav_meta_problem %}active{% endblock %}
+{% block nav_category %}active{% endblock %}
 
 {% block sub_content %}
-<div class="container">
-  <div class="col-xs-12">
-    <div id="metaProblem"></div>
+<div class="container row justify-content-sm-center">
+  <div class="col-lg-8 col-md-10">
+    <div id="category"></div>
   </div>
 </div>
 {% endblock %}
@@ -16,10 +16,10 @@
 {% block script %}
 <script>
 SATable.SimpleAjaxForm({
-  id: 'metaProblem',
+  id: 'category',
   method: 'POST',
-  toSuccess: '{% url 'problem_meta' %}',
-  url: '{% url 'admin-meta-problems-list' %}',
+  toSuccess: '{% url 'problem_category' %}',
+  url: '{% url 'admin-categories-list' %}',
   items: [
     {
       name: 'available',
@@ -61,5 +61,6 @@ SATable.SimpleAjaxForm({
     }
   ]
 })
+
 </script>
 {% endblock %}

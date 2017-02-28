@@ -4,13 +4,13 @@ SAForm.Boolean = function(self, item) {
   var options = []
   if (item.defaultTrue) {
     options = [
-      { text: '是', value: true, selected: true },
-      { text: '否', value: true },
+      { text: '是', value: 'true', selected: true },
+      { text: '否', value: 'false' },
     ]
   } else {
     options = [
-      { text: '是', value: true, selected: true },
-      { text: '否', value: true },
+      { text: '是', value: 'true' },
+      { text: '否', value: 'false', selected: true },
     ]
   }
   return SATable.getDom.InputSelect(item.name, item.caption, options)
@@ -50,6 +50,23 @@ SAForm.Select = function(self, item) {
 
   return input
 }
+SAForm.Number = function(self, item) {
+  var getDom = SATable.getDom
+  var typeInfo = item.typeInfo
+
+  var div = getDom.Div('form-group row')
+  var label = $('<label class="col-md-3 col-form-label">' + item.caption + '</label>')
+  var divInput = SATable.getDom.Div('col-md-9')
+  var input = getDom.Input(item.name, '')
+
+  $(input).attr('type', 'number')
+
+  $(div).append(label).append(divInput)
+  $(divInput).append(input)
+
+  return div
+}
+
 SAForm.requestSelectData = function(self, selectDom, item) {
   var typeInfo = item.typeInfo
   var ajaxInfo = typeInfo.ajaxInfo
@@ -72,7 +89,8 @@ SAForm.requestSelectData = function(self, selectDom, item) {
 SAForm.inputDomChoice = {
   Boolean: SAForm.Boolean,
   Text: SAForm.Text,
-  Select: SAForm.Select
+  Select: SAForm.Select,
+  Number: SAForm.Number
 }
 
 SAForm.initData = function(self, formInfo) {
@@ -94,6 +112,9 @@ SAForm.initData = function(self, formInfo) {
     item.caption = it.caption ? it.caption : it.name
     item.type = it.type ? it.type : 'Text'
     item.typeInfo = it.typeInfo ? it.typeInfo : {}
+    if (it.defaultTrue) {
+      item.defaultTrue = true
+    }
 
     formItems.push(item)
   }

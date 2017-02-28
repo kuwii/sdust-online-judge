@@ -635,6 +635,23 @@ def problem(request):
     })
 
 
+def problem_create(request):
+    info = user_info(request)
+
+    if not info['is_authenticated']:
+        return redirect(reverse('login_page'))
+
+    if not is_problem_admin(info):
+        return redirect(reverse('homepage'))
+
+    envs = Environment.objects.filter(available=True, deleted=False)
+
+    return render(request, 'problemCreate.html', {
+        'user': info,
+        'envs': envs
+    })
+
+
 def problem_instance(request, pid):
     info = user_info(request)
 
@@ -663,6 +680,20 @@ def problem_category(request):
         return redirect(reverse('homepage'))
 
     return render(request, 'problemCategory.html', {
+        'user': info
+    })
+
+
+def problem_category_create(request):
+    info = user_info(request)
+
+    if not info['is_authenticated']:
+        return redirect(reverse('login_page'))
+
+    if not has_submission_access(info):
+        return redirect(reverse('homepage'))
+
+    return render(request, 'problemCategoryCreate.html', {
         'user': info
     })
 

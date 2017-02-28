@@ -84,7 +84,7 @@ function login() {
       data: data,
       dataType: 'json',
       success: function(ret) {
-        url = "{% url 'client_users' %}instance/" + ret.id
+        url = "{% url 'client_users' %}instance/" + ret.username
         location.href = url
       },
       error: function(a, b, c) {

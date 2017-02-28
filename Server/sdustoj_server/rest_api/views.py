@@ -6,6 +6,7 @@ from rest_framework.status import HTTP_200_OK
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.status import HTTP_201_CREATED
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Group
@@ -38,6 +39,8 @@ from .filters import UserAdminFilter
 from .filters import SubmissionFilters
 
 from .judge import update_problem, update_meta, update_all, publish_submission
+
+from json import loads
 
 
 class MetaProblemViewSets:
@@ -511,6 +514,24 @@ class ProblemViewSets:
                 search_fields = ('title', 'introduction')
                 ordering_fields = ('id', 'create_time', 'update_time',
                                    'number_test_data', 'number_limit', 'number_category', 'number_node')
+
+                def create(self, request, *args, **kwargs):
+                    print(request.data)
+                    if 'dataStr' in request.data:
+                        get_username = getattr(self, 'get_username')
+                        get_username(request)
+                        extra_data = getattr(self, 'extra_data')
+                        username = getattr(self, 'username')
+                        extra_data['creator'] = username
+                        extra_data['updater'] = username
+                        data = loads(request.data['dataStr'])
+                        serializer = self.get_serializer(data=data)
+                        serializer.is_valid(raise_exception=True)
+                        self.perform_create(serializer)
+                        headers = self.get_success_headers(serializer.data)
+                        return Response(serializer.data, status=HTTP_201_CREATED, headers=headers)
+                    else:
+                        return super().create(request, *args, **kwargs)
 
                 def perform_create(self, serializer):
                     instance = super().perform_create(serializer)

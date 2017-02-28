@@ -13,31 +13,30 @@
   <p class="text-muted"><small>若没有特殊评测或均为不可用状态，则视为该题目没有特殊评测代码，使用正常流程进行评测。</small></p>
   <hr>
   <div class="col-xs-12">
-    <div id="problem"></div>
+    <div id="spj"></div>
   </div>
 </div>
 {% endblock %}
 
 {% block script %}
 <script>
-drf_sat_adapter.init_sat_table({
-  id: "problem",
+SATable.DRFTable({
+  id: 'spj',
+  title: '特殊评测',
   url: "{% url 'admin-meta-problem-special-judge-list' meta_problem.id problem.id %}",
-  create_url: "{% url 'problem_meta_problem_spj_create' meta_problem.id problem.id %}",
-  title: "特殊评测集",
-  base_url: "{% url 'problem_meta_problem_spj' meta_problem.id problem.id %}",
-  column: [
-    { name: "id", caption: "ID", sort: true, type: "link", key: "id", ordering: 1 },
-    { name: "title", caption: "标题", sort: true, type: "link", key: "id", ordering: 0 },
-    { name: "introduction", caption: "简介", sort: true, ordering: 0 },
-    { name: "create_time", caption: "创建", sort: true, type: "datetime", ordering: 0 },
-    { name: "update_time", caption: "更新", sort: true, type: "datetime", ordering: 0 },
-    { name: "available", caption: "可用", ordering: 0 },
+  search: true,
+  filters: [
+    { name: 'creator', type: 'text', placeholder: '请输入创建者用户名', caption: '创建者' },
+    { name: 'updater', type: 'text', placeholder: '请输入更新者用户名', caption: '更新者' }
   ],
-  filter: [
-    { name: "creator", type: "text", placeholder: "用户名", caption: "创建者" },
-    { name: "updater", type: "text", placeholder: "用户名", caption: "更新者" },
-  ]
+  columns: [
+    { name: 'id', caption: 'ID', sort: true, ordering: 1, type: 'Link', typeInfo: { base_url: '{% url 'problem_meta_problem_spj' meta_problem.id problem.id %}', key: 'id' } },
+    { name: 'title', caption: '标题', sort: true, type: 'Link', typeInfo: { base_url: '{% url 'problem_meta' %}', key: 'id' } },
+    { name: "introduction", caption: "简介", type: 'Text' },
+    { name: 'update_time', caption: '更新时间', sort: true, type: 'Datetime' },
+    { name: "available", caption: "可用", type: 'Boolean' }
+  ],
+  createURL: '{% url 'problem_meta_problem_spj_create' meta_problem.id problem.id %}'
 })
 </script>
 {% endblock %}

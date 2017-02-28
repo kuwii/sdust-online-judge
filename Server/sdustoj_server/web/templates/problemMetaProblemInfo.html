@@ -15,7 +15,7 @@
           <label class="col-lg-3 col-md-4 control-label">对外可用</label>
           <div class="col-lg-9 col-md-8">
             <select name="available" class="form-control" datatype="number">
-              {% if available %}
+              {% if problem.available %}
                 <option value="true" selected="selected">可用</option>
                 <option value="false">不可用</option>
               {% else %}
