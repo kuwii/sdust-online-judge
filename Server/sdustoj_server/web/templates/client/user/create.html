@@ -1,0 +1,72 @@
+{% extends "client/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}创建用户端账户{% endblock %}
+
+{% block nav_client_user %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container row justify-content-sm-center">
+  <div class="col-lg-8 col-md-10">
+    <div id="clientUser"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.SimpleAjaxForm({
+  id: 'clientUser',
+  method: 'POST',
+  toSuccess: '{% url 'client_users' %}',
+  url: '{% url 'admin-client-users-list' %}',
+  items: [
+    {
+      name: 'is_active',
+      caption: '可用',
+      type: 'Boolean',
+      defaultTrue: true
+    },
+    {
+      name: 'username',
+      caption: '用户名',
+      type: 'Text',
+      typeInfo: {
+        max_length: 150
+      }
+    },
+    {
+      name: 'password',
+      caption: '密码',
+      type: 'Password',
+      typeInfo: {
+        max_length: 128,
+        confirm: true
+      }
+    },
+    {
+      name: 'last_name',
+      caption: '姓',
+      type: 'Text',
+      typeInfo: {
+        max_length: 30
+      }
+    },
+    {
+      name: 'first_name',
+      caption: '名',
+      type: 'Text',
+      typeInfo: {
+        max_length: 30
+      }
+    },
+    {
+      name: 'email',
+      caption: '邮箱',
+      type: 'Email'
+    }
+  ]
+})
+
+</script>
+{% endblock %}

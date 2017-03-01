@@ -1,0 +1,37 @@
+{% extends "client/client/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}可访问题库{% endblock %}
+
+{% block nav_categories %}active{% endblock %}
+
+{% block sub_content2 %}
+<div class="container col-lg-8 col-md-7">
+  <div class="col-xs-12">
+    <div id="categories"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.DRFTable({
+  id: 'categories',
+  title: '题库',
+  url: "{% url 'admin-clients-categories-list' client.id %}",
+  search: true,
+  filters: [
+    { name: 'creator', type: 'text', placeholder: '请输入创建者用户名', caption: '创建者' },
+    { name: 'updater', type: 'text', placeholder: '请输入更新者用户名', caption: '更新者' }
+  ],
+  columns: [
+    { name: 'id', caption: 'ID', sort: true, ordering: 1, type: 'Link', typeInfo: { base_url: '{% url 'client_categories' client.id %}', key: 'id' } },
+    { name: 'category_id', caption: '题库ID', sort: true, ordering: 1, type: 'Link', typeInfo: { base_url: '{% url 'problem_category' %}', key: 'category_id' } },
+    { name: 'create_time', caption: '创建', sort: true, type: 'Datetime' },
+    { name: 'update_time', caption: '更新', sort: true, type: 'Datetime' },
+    { name: "available", caption: "可用", type: 'Boolean' },
+  ],
+  createURL: '{% url 'client_categories_create' client.id %}'
+})
+</script>
+{% endblock %}

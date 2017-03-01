@@ -1,0 +1,38 @@
+{% extends "client/client/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}添加可访问题库{% endblock %}
+
+{% block nav_categories %}active{% endblock %}
+
+{% block sub_content2 %}
+<div class="container row col-lg-8 col-md-7">
+  <div class="col-12">
+    <div id="category"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.SimpleAjaxForm({
+  id: 'category',
+  method: 'POST',
+  toSuccess: '{% url 'client_categories' client.id %}',
+  url: '{% url 'admin-clients-categories-list' client.id %}',
+  items: [
+    {
+      name: 'available',
+      caption: '可用',
+      type: 'Boolean',
+      defaultTrue: true
+    },
+    {
+      name: 'category_id',
+      caption: '题库ID',
+      type: 'Number',
+    }
+  ]
+})
+</script>
+{% endblock %}

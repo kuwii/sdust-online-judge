@@ -1,0 +1,50 @@
+{% extends "judge/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}编程环境详情 - {{ eid }}{% endblock %}
+
+{% block nav_env %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+      <div class="container">
+        <form action="{% url 'admin-environments-detail' env.id %}" data-method="PUT" enctype="multipart/form-data" class="form-horizontal">
+          <fieldset>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">对外可用</label>
+              <div class="col-lg-9 col-md-8">
+                <select name="available" class="form-control">
+                  {% if env.available %}
+                  <option value="true" selected="selected">可用</option>
+                  <option value="false">不可用</option>
+                  {% else %}
+                  <option value="true">可用</option>
+                  <option value="false" selected="selected">不可用</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">名称</label>
+              <div class="col-lg-9 col-md-8">
+                <input maxlength="128" name="name" class="form-control" type="text" value="{% if env.name %}{{ env.name }}{% endif %}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">评测ID</label>
+              <div class="col-lg-9 col-md-8">
+                <input maxlength="16" name="judge_id" class="form-control" type="text" value="{% if env.judge_id %}{{ env.judge_id }}{% endif %}">
+              </div>
+            </div>
+            <br/>
+            <div class="input-group-btn">
+              <button class="btn btn-primary" title="保存">保 存</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+  </div>
+</div>
+{% endblock %}
+

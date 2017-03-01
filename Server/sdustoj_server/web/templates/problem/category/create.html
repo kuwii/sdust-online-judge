@@ -1,0 +1,66 @@
+{% extends "problem/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}创建题库{% endblock %}
+
+{% block nav_category %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container row justify-content-sm-center">
+  <div class="col-lg-8 col-md-10">
+    <div id="category"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.SimpleAjaxForm({
+  id: 'category',
+  method: 'POST',
+  toSuccess: '{% url 'problem_category' %}',
+  url: '{% url 'admin-categories-list' %}',
+  items: [
+    {
+      name: 'available',
+      caption: '可用',
+      type: 'Boolean',
+      defaultTrue: true
+    },
+    {
+      name: 'title',
+      caption: '标题',
+      type: 'Text',
+      typeInfo: {
+        max_length: 128
+      }
+    },
+    {
+      name: 'introduction',
+      caption: '简介',
+      type: 'Text',
+      typeInfo: {
+        max_length: 512
+      }
+    },
+    {
+      name: 'source',
+      caption: '来源',
+      type: 'Text',
+      typeInfo: {
+        max_length: 256
+      }
+    },
+    {
+      name: 'author',
+      caption: '作者',
+      type: 'Text',
+      typeInfo: {
+        max_length: 64
+      }
+    }
+  ]
+})
+
+</script>
+{% endblock %}

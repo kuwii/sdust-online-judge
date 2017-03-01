@@ -1,0 +1,114 @@
+{% extends "adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}创建管理员账号{% endblock %}
+
+{% block sub_content %}
+<div class="container row justify-content-sm-center">
+  <div class="col-lg-8 col-md-10">
+    <div id="user"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.SimpleAjaxForm({
+  id: 'user',
+  method: 'POST',
+  toSuccess: '{% url 'users' %}',
+  url: '{% url 'admin-users-list' %}',
+  items: [
+    {
+      name: 'is_active',
+      caption: '可用',
+      type: 'Boolean',
+      defaultTrue: true
+    },
+    {
+      name: 'username',
+      caption: '用户名',
+      type: 'Text',
+      typeInfo: {
+        max_length: 150
+      }
+    },
+    {
+      name: 'groups',
+      caption: '权限',
+      type: 'Select',
+      typeInfo: {
+        many: true,
+        choices : [
+          { text: '超级管理员', value: 'Root' },
+          { text: '管理题目', value: 'ProblemAdmin' },
+          { text: '管理题库', value: 'CategoryAdmin' },
+          { text: '管理评测', value: 'JudgeAdmin' },
+          { text: '管理用户端', value: 'ClientAdmin' },
+          { text: '管理管理员', value: 'UserAdmin' }
+        ]
+      }
+    },
+    {
+      name: 'password',
+      caption: '密码',
+      type: 'Password',
+      typeInfo: {
+        max_length: 128,
+        confirm: true
+      }
+    },
+    {
+      name: 'last_name',
+      caption: '姓',
+      type: 'Text',
+      typeInfo: {
+        max_length: 30
+      }
+    },
+    {
+      name: 'first_name',
+      caption: '名',
+      type: 'Text',
+      typeInfo: {
+        max_length: 30
+      }
+    },
+    {
+      name: 'email',
+      caption: '邮箱',
+      type: 'Email'
+    }
+  ]
+})
+
+
+function login() {
+  var pwd = $("#password").val()
+  var cfm = $("#confirmation").val()
+  if (pwd != cfm) {
+    alert("两次密码输入不一致")
+  } else {
+    var form = $("#clientUserCreate")
+    var data = getFormData(form)
+
+    $.ajax({
+      type: "POST",
+      async: false,
+      url: "{% url 'admin-users-list' %}",
+      data: data,
+      dataType: 'json',
+      success: function(ret) {
+        url = "{% url 'users' %}"
+        location.href = url
+      },
+      error: function(a, b, c) {
+        test_output(a)
+      }
+    })
+  }
+
+  return false
+}
+</script>
+{% endblock %}

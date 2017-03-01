@@ -1,0 +1,68 @@
+{% extends "client/client/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}可访问题库信息{% endblock %}
+
+{% block nav_categories %}active{% endblock %}
+
+{% block sub_content2 %}
+<div class="container row col-lg-8 col-md-7">
+  <div class="col-12">
+    <form id="clientInfo" action="{% url 'admin-clients-categories-detail' client.id relation.id %}" data-method="PUT" enctype="multipart/form-data" class="form-horizontal">
+      <fieldset>
+        {% csrf_token %}
+        <div class="form-group row">
+          <label class="col-lg-3 col-md-4 control-label">对外可用</label>
+          <div class="col-lg-9 col-md-8">
+            <select name="available" class="form-control">
+              {% if relation.available %}
+              <option value="true" selected="selected">可用</option>
+              <option value="false">不可用</option>
+              {% else %}
+              <option value="true">可用</option>
+              <option value="false" selected="selected">不可用</option>
+              {% endif %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-lg-3 col-md-4 control-label">题库ID</label>
+          <div class="col-lg-9 col-md-8">
+            <input name="category_id" class="form-control" type="number" value="{{ relation.category_id }}">
+          </div>
+        </div>
+        <br/>
+        <div class="input-group-btn">
+          <button class="btn btn-primary" title="保存信息">保 存</button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function save() {
+  var form = $("#clientRelationCreate")
+  var data = getFormData(form)
+
+  $.ajax({
+    type: "POST",
+    async: false,
+    url: "{% url 'admin-clients-categories-list' client.id %}",
+    data: data,
+    dataType: 'json',
+    success: function(ret) {
+      url = "{% url 'client_categories' client.id %}" + ret.id
+      location.href = url
+    },
+    error: function(a, b, c) {
+      test_output(a)
+    }
+  })
+
+  return false
+}
+</script>
+{% endblock %}

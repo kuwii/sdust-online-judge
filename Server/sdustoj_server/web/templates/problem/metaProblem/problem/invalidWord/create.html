@@ -1,0 +1,41 @@
+{% extends "problem/metaProblem/problem/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}创建禁用单词{% endblock %}
+
+{% block nav_problem_iw %}active{% endblock %}
+
+{% block sub_content2 %}
+<div class="container row justify-content-sm-center container col-lg-8 col-md-7">
+  <div class="col-12">
+    <div id="iw"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.SimpleAjaxForm({
+  id: 'iw',
+  method: 'POST',
+  toSuccess: '{% url 'problem_meta_problem_iw' meta_problem.id problem.id %}',
+  url: '{% url 'admin-meta-problem-invalid-words-list' meta_problem.id problem.id %}',
+  items: [
+    {
+      name: 'available',
+      caption: '可用',
+      type: 'Boolean',
+      defaultTrue: true
+    },
+    {
+      name: 'word',
+      caption: '单词',
+      type: 'Text',
+      typeInfo: {
+        max_length: 128
+      }
+    }
+  ]
+})
+</script>
+{% endblock %}

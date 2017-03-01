@@ -464,7 +464,6 @@ class ProblemSerializers:
                 :param validated_data: Serializer传入的合法数据。
                 :return: 创建后的题目实例。
                 """
-                print(validated_data)
                 # 获取用户信息
                 creator = validated_data.pop('creator')
                 updater = validated_data.pop('updater')

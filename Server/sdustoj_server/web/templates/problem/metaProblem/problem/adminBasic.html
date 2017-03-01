@@ -1,0 +1,46 @@
+{% extends "problem/metaProblem/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}题目信息{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3 col-md-4">
+      <div class="container">
+        <ul class="nav flex-column nav-pills">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'problem_meta_instance' meta_problem.id %}">基本信息</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'problem_meta_description' meta_problem.id %}">描述集</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'problem_meta_sample' meta_problem.id %}">样例集</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'problem_meta_test' meta_problem.id %}">数据集</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'problem_meta_problem' meta_problem.id %}">题目集</a>
+            <ul class="nav flex-column nav-pills">
+              <li class="nav-item"><a class="nav-link {% block nav_problem_info %}{% endblock %}" href="{% url 'problem_meta_problem_instance' meta_problem.id problem.id %}">&nbsp&nbsp&nbsp&nbsp基本信息</a></li>
+              <li class="nav-item"><a class="nav-link {% block nav_problem_limits %}{% endblock %}" href="{% url 'problem_meta_problem_limits' meta_problem.id problem.id %}">&nbsp&nbsp&nbsp&nbsp编程限制集</a></li>
+              <li class="nav-item"><a class="nav-link {% block nav_problem_special %}{% endblock %}" href="{% url 'problem_meta_problem_spj' meta_problem.id problem.id %}">&nbsp&nbsp&nbsp&nbsp特殊评测</a></li>
+              <li class="nav-item"><a class="nav-link {% block nav_problem_iw %}{% endblock %}" href="{% url 'problem_meta_problem_iw' meta_problem.id problem.id %}">&nbsp&nbsp&nbsp&nbsp禁用单词集</a></li>
+              <li class="nav-item"><a class="nav-link {% block nav_problem_test %}{% endblock %}" href="{% url 'problem_meta_problem_test' meta_problem.id problem.id %}">&nbsp&nbsp&nbsp&nbsp选用数据</a></li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+      <br class="hidden-md-up">
+      <br class="hidden-md-up">
+    </div>
+    <div class="col-1 row">
+      <div class="nav-divider hidden-sm-down"></div>
+    </div>
+    {% block sub_content2 %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

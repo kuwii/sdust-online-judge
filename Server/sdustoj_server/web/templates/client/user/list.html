@@ -1,0 +1,39 @@
+{% extends "client/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}用户端账户{% endblock %}
+
+{% block nav_client_user %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+    <div id="clientUser"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.DRFTable({
+  id: 'clientUser',
+  title: '用户端账户',
+  url: "{% url 'admin-client-users-list' %}",
+  search: true,
+  filters: [
+    { name: 'creator', type: 'text', placeholder: '请输入创建者用户名', caption: '创建者' },
+    { name: 'updater', type: 'text', placeholder: '请输入更新者用户名', caption: '更新者' }
+  ],
+  columns: [
+    { name: 'username', caption: '账户名', sort: true, ordering: 1, type: 'Link', typeInfo: { base_url: '{% url 'client_users' %}instance/', key: 'username' } },
+    { name: 'last_name', caption: '姓', sort: true, type: 'Text' },
+    { name: 'first_name', caption: '名', sort: true, type: 'Text' },
+    { name: 'email', caption: "电子邮件", type: 'Text' },
+    { name: 'date_joined', caption: '创建', sort: true, type: 'Datetime' },
+    { name: 'last_login', caption: '最后登录', sort: true, type: 'Datetime' },
+    { name: "is_active", caption: "可用", type: 'Boolean' },
+  ],
+  createURL: '{% url 'client_user_create' %}'
+})
+</script>
+{% endblock %}

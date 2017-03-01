@@ -1,0 +1,67 @@
+{% extends "client/client/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}用户端信息{% endblock %}
+
+{% block nav_client_info %}active{% endblock %}
+
+{% block sub_content2 %}
+    <div class="col-lg-8 col-md-7">
+      <div class="container">
+        <form id="clientInfo" action="{% url 'admin-clients-detail' client.id %}" data-method="PUT" enctype="multipart/form-data" class="form-horizontal">
+          <fieldset>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">对外可用</label>
+              <div class="col-lg-9 col-md-8">
+                <select name="available" class="form-control">
+                  {% if client.available %}
+                  <option value="true" selected="selected">可用</option>
+                  <option value="false">不可用</option>
+                  {% else %}
+                  <option value="true">可用</option>
+                  <option value="false" selected="selected">不可用</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">名称</label>
+              <div class="col-lg-9 col-md-8">
+                <input maxlength="128" name="name" class="form-control" type="text" value="{% if client.name %}{{ client.name }}{% endif %}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">简介</label>
+              <div class="col-lg-9 col-md-8">
+                <textarea name="introduction" class="form-control">{% if client.introduction %}{{ client.introduction }}{% endif %}</textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">开放所有题库</label>
+              <div class="col-lg-9 col-md-8">
+                <select name="allow_all" class="form-control">
+                  {% if client.allow_all %}
+                  <option value="true" selected="selected">开放所有题库</option>
+                  <option value="false">不开放所有题库</option>
+                  {% else %}
+                  <option value="true">开放所有题库</option>
+                  <option value="false" selected="selected">不开放所有题库</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">绑定账号</label>
+              <div class="col-lg-9 col-md-8">
+                <input maxlength="128" name="user" class="form-control" type="text" value="{% if client.user %}{{ client.user }}{% endif %}">
+              </div>
+            </div>
+            <br/>
+            <div class="input-group-btn">
+              <button class="btn btn-primary" title="保存信息">保 存</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+{% endblock %}

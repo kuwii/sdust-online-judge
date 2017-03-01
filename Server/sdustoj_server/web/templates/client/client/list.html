@@ -1,0 +1,41 @@
+{% extends "client/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}用户端{% endblock %}
+
+{% block nav_client %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+    <div id="client"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.DRFTable({
+  id: 'client',
+  title: '用户端',
+  url: "{% url 'admin-clients-list' %}",
+  search: true,
+  filters: [
+    { name: 'creator', type: 'text', placeholder: '请输入创建者用户名', caption: '创建者' },
+    { name: 'updater', type: 'text', placeholder: '请输入更新者用户名', caption: '更新者' }
+  ],
+  columns: [
+    { name: 'id', caption: 'ID', sort: true, ordering: 1, type: 'Link', typeInfo: { base_url: '{% url 'client_clients' %}', key: 'id' } },
+    { name: 'name', caption: '名称', sort: true, type: 'Link', typeInfo: { base_url: '{% url 'client_clients' %}', key: 'id' } },
+    { name: "user", caption: "绑定账户", type: 'Link', typeInfo: { base_url: '{% url 'client_users' %}instance/', key: 'user' } },
+    { name: "introduction", caption: "简介", type: 'Text' },
+    { name: "allow_all", caption: "全部开放", type: 'Boolean' },
+    { name: 'create_time', caption: '创建', sort: true, type: 'Datetime' },
+    { name: 'update_time', caption: '更新', sort: true, type: 'Datetime' },
+    { name: "available", caption: "可用", type: 'Boolean' },
+  ],
+  createURL: '{% url 'client_create' %}'
+})
+
+</script>
+{% endblock %}

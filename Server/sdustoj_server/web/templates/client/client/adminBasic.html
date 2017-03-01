@@ -1,0 +1,25 @@
+{% extends "client/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block nav_client %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3 col-md-4">
+      <div class="container">
+        <nav class="nav flex-column nav-pills">
+          <a class="nav-link {% block nav_client_info %}{% endblock %}" href="{% url 'client_instance' client.id %}">基本信息</a>
+          <a class="nav-link {% block nav_categories %}{% endblock %}" href="{% url 'client_categories' client.id %}">可访问题库</a>
+        </nav>
+      </div>
+      <br class="hidden-md-up">
+      <br class="hidden-md-up">
+    </div>
+    <div class="col-1 row">
+      <div class="nav-divider hidden-sm-down"></div>
+    </div>
+    {% block sub_content2 %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

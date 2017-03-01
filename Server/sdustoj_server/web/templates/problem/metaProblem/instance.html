@@ -1,0 +1,59 @@
+{% extends "problem/metaProblem/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}题元信息{% endblock %}
+
+{% block nav_basic_info %}active{% endblock %}
+
+{% block sub_content2 %}
+    <div class="col-lg-8 col-md-7">
+      <div class="container">
+        <form id="userInfoForm" action="{% url 'admin-meta-problems-detail' meta_problem.id %}" data-method="PUT" enctype="multipart/form-data" class="form-horizontal">
+          <fieldset>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">对外可用</label>
+              <div class="col-lg-9 col-md-8">
+                <select name="available" class="form-control">
+                  {% if meta_problem.available %}
+                  <option value="true" selected="selected">可用</option>
+                  <option value="false">不可用</option>
+                  {% else %}
+                  <option value="true">可用</option>
+                  <option value="false" selected="selected">不可用</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">标题</label>
+              <div class="col-lg-9 col-md-8">
+                <input maxlength="128" name="title" class="form-control" type="text" value="{% if meta_problem.title %}{{ meta_problem.title }}{% endif %}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">简介</label>
+              <div class="col-lg-9 col-md-8">
+                <textarea maxlength="512" name="introduction" class="form-control">{% if meta_problem.introduction %}{{ meta_problem.introduction }}{% endif %}</textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">来源</label>
+              <div class="col-lg-9 col-md-8">
+                <input maxlength="256" name="source" class="form-control" type="text" value="{% if meta_problem.source %}{{ meta_problem.source }}{% endif %}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">作者</label>
+              <div class="col-lg-9 col-md-8">
+                <input maxlength="64" name="author" class="form-control" type="text" value="{% if meta_problem.author %}{{ meta_problem.author }}{% endif %}">
+              </div>
+            </div>
+            <br/>
+            <div class="input-group-btn">
+              <button class="btn btn-primary" title="保存个人信息">保 存</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+{% endblock %}

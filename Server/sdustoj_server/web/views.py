@@ -82,7 +82,7 @@ def personal_info(request):
     if not info['is_authenticated']:
         return redirect(reverse('login_page'))
 
-    return render(request, 'personalInfo.html', {
+    return render(request, 'personal/info.html', {
         'user': info
     })
 
@@ -93,7 +93,7 @@ def personal_edit(request):
     if not info['is_authenticated']:
         return redirect(reverse('login_page'))
 
-    return render(request, 'personalEdit.html', {
+    return render(request, 'personal/edit.html', {
         'user': info
     })
 
@@ -104,7 +104,7 @@ def personal_password(request):
     if not info['is_authenticated']:
         return redirect(reverse('login_page'))
 
-    return render(request, 'personalPassword.html', {
+    return render(request, 'personal/password.html', {
         'user': info
     })
 
@@ -118,7 +118,7 @@ def problem_home(request):
     if not has_problem_access(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'problemHome.html', {
+    return render(request, 'problem/home.html', {
         'user': info
     })
 
@@ -132,7 +132,7 @@ def problem_meta(request):
     if not is_problem_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'problemMeta.html', {
+    return render(request, 'problem/metaProblem/list.html', {
         'user': info
     })
 
@@ -146,7 +146,7 @@ def problem_meta_create(request):
     if not is_problem_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'problemMetaCreate.html', {
+    return render(request, 'problem/metaProblem/create.html', {
         'user': info
     })
 
@@ -162,7 +162,7 @@ def problem_meta_instance(request, mid):
 
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
 
-    return render(request, 'problemMetaInfo.html', {
+    return render(request, 'problem/metaProblem/instance.html', {
         'user': info,
         'meta_problem': meta_problem
     })
@@ -179,7 +179,7 @@ def problem_meta_description(request, mid):
 
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
 
-    return render(request, 'problemMetaDescription.html', {
+    return render(request, 'problem/metaProblem/description/list.html', {
         'user': info,
         'meta_problem': meta_problem
     })
@@ -196,7 +196,7 @@ def problem_meta_description_create(request, mid):
 
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
 
-    return render(request, 'problemMetaDescriptionCreate.html', {
+    return render(request, 'problem/metaProblem/description/create.html', {
         'user': info,
         'meta_problem': meta_problem
     })
@@ -214,7 +214,7 @@ def problem_meta_description_instance(request, mid, did):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     description = get_object_or_404(Description.objects, id=int(did))
 
-    return render(request, 'problemMetaDescriptionInstance.html', {
+    return render(request, 'problem/metaProblem/description/instance.html', {
         'user': info,
         'meta_problem': meta_problem,
         'description': description
@@ -232,7 +232,7 @@ def problem_meta_sample(request, mid):
 
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
 
-    return render(request, 'problemMetaSample.html', {
+    return render(request, 'problem/metaProblem/sample/list.html', {
         'user': info,
         'meta_problem': meta_problem
     })
@@ -249,7 +249,7 @@ def problem_meta_sample_create(request, mid):
 
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
 
-    return render(request, 'problemMetaSampleCreate.html', {
+    return render(request, 'problem/metaProblem/sample/create.html', {
         'user': info,
         'meta_problem': meta_problem
     })
@@ -267,7 +267,7 @@ def problem_meta_sample_instance(request, mid, sid):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     sample = get_object_or_404(Sample.objects, id=int(sid))
 
-    return render(request, 'problemMetaSampleInstance.html', {
+    return render(request, 'problem/metaProblem/sample/instance.html', {
         'user': info,
         'meta_problem': meta_problem,
         'sample': sample
@@ -285,7 +285,7 @@ def problem_meta_test(request, mid):
 
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
 
-    return render(request, 'problemMetaTest.html', {
+    return render(request, 'problem/metaProblem/testData/list.html', {
         'user': info,
         'meta_problem': meta_problem
     })
@@ -302,7 +302,7 @@ def problem_meta_test_create(request, mid):
 
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
 
-    return render(request, 'problemMetaTestCreate.html', {
+    return render(request, 'problem/metaProblem/testData/create.html', {
         'user': info,
         'meta_problem': meta_problem
     })
@@ -320,7 +320,7 @@ def problem_meta_test_instance(request, mid, tid):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     test_data = get_object_or_404(TestData.objects, id=int(tid))
 
-    return render(request, 'problemMetaTestInstance.html', {
+    return render(request, 'problem/metaProblem/testData/instance.html', {
         'user': info,
         'meta_problem': meta_problem,
         'test': test_data,
@@ -340,7 +340,7 @@ def problem_meta_problem(request, mid):
 
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
 
-    return render(request, 'problemMetaProblem.html', {
+    return render(request, 'problem/metaProblem/problem/list.html', {
         'user': info,
         'meta_problem': meta_problem
     })
@@ -357,7 +357,7 @@ def problem_meta_problem_create(request, mid):
 
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
 
-    return render(request, 'problemMetaProblemCreate.html', {
+    return render(request, 'problem/metaProblem/problem/create.html', {
         'user': info,
         'meta_problem': meta_problem
     })
@@ -375,7 +375,7 @@ def problem_meta_problem_instance(request, mid, pid):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     prob = get_object_or_404(Problem.objects, id=int(pid))
 
-    return render(request, 'problemMetaProblemInfo.html', {
+    return render(request, 'problem/metaProblem/problem/instance.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob
@@ -394,7 +394,7 @@ def problem_meta_problem_limits(request, mid, pid):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     prob = get_object_or_404(Problem.objects, id=int(pid))
 
-    return render(request, 'problemMetaProblemLimits.html', {
+    return render(request, 'problem/metaProblem/problem/limit/list.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob
@@ -413,7 +413,7 @@ def problem_meta_problem_limits_create(request, mid, pid):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     prob = get_object_or_404(Problem.objects, id=int(pid))
 
-    return render(request, 'problemMetaProblemLimitsCreate.html', {
+    return render(request, 'problem/metaProblem/problem/limit/create.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob
@@ -433,7 +433,7 @@ def problem_meta_problem_limits_instance(request, mid, pid, lid):
     prob = get_object_or_404(Problem.objects, id=int(pid))
     limit = get_object_or_404(Limit.objects, id=int(lid))
 
-    return render(request, 'problemMetaProblemLimitsInstance.html', {
+    return render(request, 'problem/metaProblem/problem/limit/instance.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob,
@@ -453,7 +453,7 @@ def problem_meta_problem_spj(request, mid, pid):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     prob = get_object_or_404(Problem.objects, id=int(pid))
 
-    return render(request, 'problemMetaProblemSpecial.html', {
+    return render(request, 'problem/metaProblem/problem/specialJudge/list.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob
@@ -472,7 +472,7 @@ def problem_meta_problem_spj_create(request, mid, pid):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     prob = get_object_or_404(Problem.objects, id=int(pid))
 
-    return render(request, 'problemMetaProblemSpecialCreate.html', {
+    return render(request, 'problem/metaProblem/problem/specialJudge/create.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob
@@ -494,7 +494,7 @@ def problem_meta_problem_spj_instance(request, mid, pid, sid):
 
     code = spj.get_code()
 
-    return render(request, 'problemMetaProblemSpecialInstance.html', {
+    return render(request, 'problem/metaProblem/problem/specialJudge/instance.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob,
@@ -515,7 +515,7 @@ def problem_meta_problem_iw(request, mid, pid):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     prob = get_object_or_404(Problem.objects, id=int(pid))
 
-    return render(request, 'problemMetaProblemIW.html', {
+    return render(request, 'problem/metaProblem/problem/invalidWord/list.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob
@@ -534,7 +534,7 @@ def problem_meta_problem_iw_create(request, mid, pid):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     prob = get_object_or_404(Problem.objects, id=int(pid))
 
-    return render(request, 'problemMetaProblemIWCreate.html', {
+    return render(request, 'problem/metaProblem/problem/invalidWord/create.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob
@@ -554,7 +554,7 @@ def problem_meta_problem_iw_instance(request, mid, pid, iw_id):
     prob = get_object_or_404(Problem.objects, id=int(pid))
     iw = get_object_or_404(InvalidWord.objects, id=int(iw_id))
 
-    return render(request, 'problemMetaProblemIWInstance.html', {
+    return render(request, 'problem/metaProblem/problem/invalidWord/instance.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob,
@@ -574,7 +574,7 @@ def problem_meta_problem_test(request, mid, pid):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     prob = get_object_or_404(Problem.objects, id=int(pid))
 
-    return render(request, 'problemMetaProblemTest.html', {
+    return render(request, 'problem/metaProblem/problem/testDataRelation/list.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob
@@ -593,7 +593,7 @@ def problem_meta_problem_test_create(request, mid, pid):
     meta_problem = get_object_or_404(MetaProblem.objects, id=int(mid))
     prob = get_object_or_404(Problem.objects, id=int(pid))
 
-    return render(request, 'problemMetaProblemTestCreate.html', {
+    return render(request, 'problem/metaProblem/problem/testDataRelation/create.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob
@@ -613,7 +613,7 @@ def problem_meta_problem_test_instance(request, mid, pid, tid):
     prob = get_object_or_404(Problem.objects, id=int(pid))
     test = get_object_or_404(ProblemTestData.objects, id=int(tid))
 
-    return render(request, 'problemMetaProblemTestInstance.html', {
+    return render(request, 'problem/metaProblem/problem/testDataRelation/instance.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob,
@@ -630,7 +630,7 @@ def problem(request):
     if not is_category_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'problem.html', {
+    return render(request, 'problem/problem/list.html', {
         'user': info
     })
 
@@ -646,7 +646,7 @@ def problem_create(request):
 
     envs = Environment.objects.filter(available=True, deleted=False)
 
-    return render(request, 'problemCreate.html', {
+    return render(request, 'problem/problem/create.html', {
         'user': info,
         'envs': envs
     })
@@ -663,7 +663,7 @@ def problem_instance(request, pid):
 
     prob = get_object_or_404(Problem.objects, id=int(pid))
 
-    return render(request, 'problemInstance.html', {
+    return render(request, 'problem/problem/instance.html', {
         'user': info,
         'pid': pid,
         'problem': prob
@@ -679,7 +679,7 @@ def problem_category(request):
     if not has_submission_access(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'problemCategory.html', {
+    return render(request, 'problem/category/list.html', {
         'user': info
     })
 
@@ -693,7 +693,7 @@ def problem_category_create(request):
     if not has_submission_access(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'problemCategoryCreate.html', {
+    return render(request, 'problem/category/create.html', {
         'user': info
     })
 
@@ -709,7 +709,7 @@ def problem_category_instance(request, cid):
 
     category = get_object_or_404(Category.objects, id=int(cid))
 
-    return render(request, 'problemCategoryInstance.html', {
+    return render(request, 'problem/category/instance.html', {
         'user': info,
         'cat': category
     })
@@ -726,7 +726,7 @@ def problem_category_dir(request, cid):
 
     category = get_object_or_404(Category.objects, id=int(cid))
 
-    return render(request, 'problemCategoryDir.html', {
+    return render(request, 'problem/category/directory/tree.html', {
         'user': info,
         'cat': category
     })
@@ -741,7 +741,7 @@ def problem_submissions(request):
     if not is_category_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'submission.html', {
+    return render(request, 'submission/list.html', {
         'user': info
     })
 
@@ -757,7 +757,7 @@ def problem_submission_info(request, sid):
 
     submission = get_object_or_404(Submission.objects, id=int(sid))
 
-    return render(request, 'submissionInfo.html', {
+    return render(request, 'submission/instance.html', {
         'user': info,
         'submission': submission
     })
@@ -772,7 +772,7 @@ def client_clients(request):
     if not is_client_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'client.html', {
+    return render(request, 'client/client/list.html', {
         'user': info,
     })
 
@@ -786,7 +786,7 @@ def client_create(request):
     if not is_client_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'clientCreate.html', {
+    return render(request, 'client/client/create.html', {
         'user': info,
     })
 
@@ -802,7 +802,7 @@ def client_instance(request, cid):
 
     client = get_object_or_404(Client.objects, id=int(cid))
 
-    return render(request, 'clientInfo.html', {
+    return render(request, 'client/client/instance.html', {
         'user': info,
         'client': client
     })
@@ -819,7 +819,7 @@ def client_categories(request, cid):
 
     client = get_object_or_404(Client.objects, id=int(cid))
 
-    return render(request, 'clientCategories.html', {
+    return render(request, 'client/client/categoryRelation/list.html', {
         'user': info,
         'client': client
     })
@@ -836,7 +836,7 @@ def client_categories_create(request, cid):
 
     client = get_object_or_404(Client.objects, id=int(cid))
 
-    return render(request, 'clientCategoriesCreate.html', {
+    return render(request, 'client/client/categoryRelation/create.html', {
         'user': info,
         'client': client
     })
@@ -854,7 +854,7 @@ def client_category_instance(request, cid, rid):
     client = get_object_or_404(Client.objects, id=int(cid))
     relation = get_object_or_404(ClientCategory.objects, id=int(rid))
 
-    return render(request, 'clientCategoryInstance.html', {
+    return render(request, 'client/client/categoryRelation/instance.html', {
         'user': info,
         'client': client,
         'relation': relation
@@ -870,7 +870,7 @@ def client_users(request):
     if not is_client_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'clientUser.html', {
+    return render(request, 'client/user/list.html', {
         'user': info,
     })
 
@@ -884,7 +884,7 @@ def client_user_create(request):
     if not is_client_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'clientUserCreate.html', {
+    return render(request, 'client/user/create.html', {
         'user': info,
     })
 
@@ -900,7 +900,7 @@ def client_user_instance(request, username):
 
     client_user = get_object_or_404(User.objects.filter(groups__name=GROUP_NAME_CLIENT), username=username)
 
-    return render(request, 'clientUserInstance.html', {
+    return render(request, 'client/user/instance.html', {
         'user': info,
         'clientUser': client_user
     })
@@ -915,7 +915,7 @@ def users(request):
     if not is_user_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'users.html', {
+    return render(request, 'user/list.html', {
         'user': info
     })
 
@@ -931,7 +931,7 @@ def user_create(request):
 
     groups = Group.objects.exclude(name=GROUP_NAME_CLIENT)
 
-    return render(request, 'userCreate.html', {
+    return render(request, 'user/create.html', {
         'user': info,
         'groups': groups
     })
@@ -949,7 +949,7 @@ def user_instance(request, username):
     groups = Group.objects.exclude(name=GROUP_NAME_CLIENT)
     u_info = get_object_or_404(User.objects.exclude(groups__name=GROUP_NAME_CLIENT), username=username)
 
-    return render(request, 'userInstance.html', {
+    return render(request, 'user/instance.html', {
         'user': info,
         'groups': groups,
         'u_info': u_info
@@ -968,7 +968,7 @@ def submit_problem(request, pid):
     prob = get_object_or_404(Problem.objects.filter(available=True, deleted=False), id=int(pid))
     environments = Environment.objects.filter(available=True, deleted=False).order_by('id')
 
-    return render(request, 'SubmissionCreate.html', {
+    return render(request, 'problem/problem/submit.html', {
         'user': info,
         'problem': prob,
         'envs': environments
@@ -984,7 +984,7 @@ def environments(request):
     if not is_judge_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'environments.html', {
+    return render(request, 'judge/environment/list.html', {
         'user': info
     })
 
@@ -998,7 +998,7 @@ def environment_create(request):
     if not is_judge_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'environmentCreate.html', {
+    return render(request, 'judge/environment/create.html', {
         'user': info
     })
 
@@ -1014,7 +1014,7 @@ def environment_instance(request, eid):
 
     env = get_object_or_404(Environment.objects.all(), id=int(eid))
 
-    return render(request, 'environmentInstance.html', {
+    return render(request, 'judge/environment/instance.html', {
         'user': info,
         'env': env
     })
@@ -1029,7 +1029,7 @@ def judges(request):
     if not is_judge_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'judges.html', {
+    return render(request, 'judge/judge/list.html', {
         'user': info
     })
 
@@ -1043,7 +1043,7 @@ def judge_create(request):
     if not is_judge_admin(info):
         return redirect(reverse('homepage'))
 
-    return render(request, 'judgeCreate.html', {
+    return render(request, 'judge/judge/create.html', {
         'user': info
     })
 
@@ -1061,7 +1061,7 @@ def judge_instance(request, jid):
     env = Environment.objects.filter(deleted=False).order_by('id')
     judge_environments = judge.environment.all()
 
-    return render(request, 'judgeInstance.html', {
+    return render(request, 'judge/judge/instance.html', {
         'user': info,
         'jid': jid,
         'judge': judge,
@@ -1073,4 +1073,4 @@ def judge_instance(request, jid):
 def login(request):
     if request.user.is_authenticated():
         return redirect(reverse('homepage'))
-    return render(request, 'login.html')
+    return render(request, 'personal/login.html')

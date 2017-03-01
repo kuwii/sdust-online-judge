@@ -1,0 +1,70 @@
+{% extends "judge/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}评测机详情 - {{ jid }}{% endblock %}
+
+{% block nav_judge %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+      <div class="container">
+        <form action="{% url 'admin-judges-detail' judge.id %}" data-method="PUT" enctype="multipart/form-data" class="form-horizontal">
+          <fieldset>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">对外可用</label>
+              <div class="col-lg-9 col-md-8">
+                <select name="available" class="form-control">
+                  {% if judge.available %}
+                  <option value="true" selected="selected">可用</option>
+                  <option value="false">不可用</option>
+                  {% else %}
+                  <option value="true">可用</option>
+                  <option value="false" selected="selected">不可用</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">名称</label>
+              <div class="col-lg-9 col-md-8">
+                <input maxlength="128" name="name" class="form-control" type="text" value="{% if judge.name %}{{ judge.name }}{% endif %}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">信息</label>
+              <div class="col-lg-9 col-md-8">
+                <textarea name="info" class="form-control">{% if judge.info %}{{ judge.info }}{% endif %}</textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">命令消息队列</label>
+              <div class="col-lg-9 col-md-8">
+                <input maxlength="64" name="cmd_queue" class="form-control" type="text" value="{% if judge.cmd_queue %}{{ judge.cmd_queue }}{% endif %}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-3 col-md-4 control-label">支持的编程环境</label>
+              <div class="col-lg-9 col-md-8">
+                <select name="environment" class="form-control" multiple="multiple">
+                {% for i in environments %}
+                {% if i in judge_environments %}
+                  <option value="{{ i.id }}" selected="selected">{{ i.id }}: {{ i.name }}</option>
+                {% else %}
+                  <option value="{{ i.id }}">{{ i.id }}: {{ i.name }}</option>
+                {% endif %}
+                {% endfor %}
+                </select>
+              </div>
+            </div>
+            <br/>
+            <div class="input-group-btn">
+              <button class="btn btn-primary" title="保存个人信息">保 存</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+  </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,31 @@
+{% extends "adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}管理员{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+    <div id="users"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.DRFTable({
+  id: 'users',
+  title: '管理员',
+  url: "{% url 'admin-users-list' %}",
+  search: true,
+  columns: [
+    { name: 'username', caption: '账户名', sort: true, ordering: 1, type: 'Link', typeInfo: { base_url: '{% url 'users' %}instance/', key: 'username' } },
+    { name: "last_name", caption: "姓", type: 'Text' },
+    { name: "first_name", caption: "名", type: 'Text' },
+    { name: 'last_login', caption: '最后登录', sort: true, type: 'Datetime' },
+    { name: "is_active", caption: "可用", type: 'Boolean' },
+  ],
+  createURL: '{% url 'user_create' %}',
+})
+</script>
+{% endblock %}

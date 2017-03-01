@@ -1,0 +1,35 @@
+{% extends "adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}提交记录{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+    <div id="submission"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.DRFTable({
+  id: 'submission',
+  title: '提交记录',
+  url: "{% url 'admin-submissions-list' %}",
+  search: true,
+  columns: [
+    { name: 'id', caption: 'ID', sort: true, ordering: -1, type: 'Link', typeInfo: { base_url: '{% url 'problem_submission' %}', key: 'id' } },
+    { name: 'problem_id', caption: '题目', sort: true, ordering: 1, type: 'Link', typeInfo: { base_url: '{% url 'problem_problem' %}', key: 'problem_id' } },
+    { name: 'environment', caption: '语言', type: 'Text' },
+    { name: 'status_word', caption: '状态', type: 'Text' },
+    { name: 'time', caption: '时间', type: 'Text' },
+    { name: 'memory', caption: '内存', type: 'Text' },
+    { name: 'length', caption: '长度', type: 'Text' },
+    { name: 'submit_time', caption: '提交时间', sort: true, type: 'Datetime' },
+    { name: "judge", caption: "评测机", type: 'Text' },
+  ]
+})
+
+</script>
+{% endblock %}

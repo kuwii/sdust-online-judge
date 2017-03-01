@@ -1,0 +1,42 @@
+{% extends "problem/metaProblem/problem/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}特殊评测集{% endblock %}
+
+{% block nav_problem_special %}active{% endblock %}
+
+{% block sub_content2 %}
+<div class="container col-lg-8 col-md-7">
+  <h4 class="text-muted">特殊评测规则</h4>
+  <p class="text-muted"><small>一道题目只可以使用一份特殊评测，但可以存有多份特殊评测。</small></p>
+  <p class="text-muted"><small>一道题目下存有的特殊评测中，设置为可用的特殊评测中ID最大者即视为此题目的特殊评测。</small></p>
+  <p class="text-muted"><small>若没有特殊评测或均为不可用状态，则视为该题目没有特殊评测代码，使用正常流程进行评测。</small></p>
+  <hr>
+  <div class="col-xs-12">
+    <div id="spj"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.DRFTable({
+  id: 'spj',
+  title: '特殊评测',
+  url: "{% url 'admin-meta-problem-special-judge-list' meta_problem.id problem.id %}",
+  search: true,
+  filters: [
+    { name: 'creator', type: 'text', placeholder: '请输入创建者用户名', caption: '创建者' },
+    { name: 'updater', type: 'text', placeholder: '请输入更新者用户名', caption: '更新者' }
+  ],
+  columns: [
+    { name: 'id', caption: 'ID', sort: true, ordering: 1, type: 'Link', typeInfo: { base_url: '{% url 'problem_meta_problem_spj' meta_problem.id problem.id %}', key: 'id' } },
+    { name: 'title', caption: '标题', sort: true, type: 'Link', typeInfo: { base_url: '{% url 'problem_meta_problem_spj' meta_problem.id problem.id %}', key: 'id' } },
+    { name: "introduction", caption: "简介", type: 'Text' },
+    { name: 'update_time', caption: '更新时间', sort: true, type: 'Datetime' },
+    { name: "available", caption: "可用", type: 'Boolean' }
+  ],
+  createURL: '{% url 'problem_meta_problem_spj_create' meta_problem.id problem.id %}'
+})
+</script>
+{% endblock %}

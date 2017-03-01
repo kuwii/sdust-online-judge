@@ -1,0 +1,63 @@
+{% extends "client/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}创建用户端{% endblock %}
+
+{% block nav_client %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container row justify-content-sm-center">
+  <div class="col-lg-8 col-md-10">
+    <div id="client"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.SimpleAjaxForm({
+  id: 'client',
+  method: 'POST',
+  toSuccess: '{% url 'client_clients' %}',
+  url: '{% url 'admin-clients-list' %}',
+  items: [
+    {
+      name: 'available',
+      caption: '可用',
+      type: 'Boolean',
+      defaultTrue: true
+    },
+    {
+      name: 'allow_all',
+      caption: '开放所有题库',
+      type: 'Boolean',
+      defaultTrue: false
+    },
+    {
+      name: 'user',
+      caption: '绑定账号',
+      type: 'Text',
+      typeInfo: {
+        max_length: 150
+      }
+    },
+    {
+      name: 'name',
+      caption: '用户端名称',
+      type: 'Text',
+      typeInfo: {
+        max_length: 128
+      }
+    },
+    {
+      name: 'introduction',
+      caption: '简介',
+      type: 'Text',
+      typeInfo: {
+        max_length: 512
+      }
+    }
+  ]
+})
+</script>
+{% endblock %}
