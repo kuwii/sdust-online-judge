@@ -65,3 +65,10 @@ SATable.DRF.keepRequest = function(saForm, selectDom, item, ret) {
     saForm.requestSelectData(saForm, selectDom, item)
   }
 }
+
+SATable.DRF.keepRequestValue = function(saForm, selectDom, item, ret, value) {
+  if (ret.next != null) {
+    item.ajaxInfo.url = ret.next
+    saForm.requestSelectData(saForm, selectDom, item, value)
+  }
+}

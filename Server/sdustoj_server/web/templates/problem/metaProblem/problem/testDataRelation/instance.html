@@ -8,29 +8,44 @@
 {% block sub_content2 %}
 <div class="container row justify-content-sm-center container col-lg-8 col-md-7">
   <div class="col-12">
-    <form id="descriptionCreateForm" action="{% url 'admin-meta-problem-test-data-detail' meta_problem.id problem.id test.id %}" data-method="PUT" enctype="multipart/form-data" class="form-horizontal">
-      <fieldset>
-        {% csrf_token %}
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">对外可用</label>
-          <div class="col-lg-9 col-md-8">
-            <select name="available" class="form-control" datatype="number">
-              {% if test.available %}
-              <option value="true" selected="selected">可用</option>
-              <option value="false">不可用</option>
-              {% else %}
-              <option value="true">可用</option>
-              <option value="false" selected="selected">不可用</option>
-              {% endif %}
-            </select>
-          </div>
-        </div>
-        <br/>
-        <div class="input-group-btn">
-          <button class="btn btn-primary" title="保存">保 存</button>
-        </div>
-      </fieldset>
-    </form>
+    <div id="testDataRelation"></div>
   </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.SimpleAjaxInfo({
+  id: 'testDataRelation',
+  title: '题目选用测试数据',
+  getMethod: 'GET',
+  updateMethod: 'PUT',
+  removeMethod: 'DELETE',
+  getURL: '{% url 'admin-meta-problem-test-data-detail' meta_problem.id problem.id test.id %}',
+  updateURL: '{% url 'admin-meta-problem-test-data-detail' meta_problem.id problem.id test.id %}',
+  removeURL: '{% url 'admin-meta-problem-test-data-detail' meta_problem.id problem.id test.id %}',
+  removeToURL: '{% url 'problem_meta_problem_test' meta_problem.id problem.id %}',
+  items: [
+    { name: 'id', caption: '关系ID', type: 'Number', readOnly: true },
+    'Divide',
+    { name: 'test_data', caption: '测试数据', type: 'Item', typeInfo: {
+      field: 'title',
+      type: 'Text'
+    }, readOnly: true },
+    { name: 'test_data', caption: '测试数据ID', type: 'Item', typeInfo: {
+      field: 'id',
+      type: 'Number'
+    }, readOnly: true },
+    'Divide',
+    { name: 'creator', caption: '创建者', type: 'Text', readOnly: true },
+    { name: 'create_time', caption: '创建时间', type: 'Datetime', readOnly: true },
+    { name: 'updater', caption: '更新者', type: 'Text', readOnly: true },
+    { name: 'update_time', caption: '更新时间', type: 'Datetime', readOnly: true },
+    'Divide',
+    { name: 'available', caption: '对外可用', type: 'Boolean' },
+    { name: 'deleted', caption: '是否废弃', type: 'Boolean' },
+  ]
+
+})
+</script>
 {% endblock %}

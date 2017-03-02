@@ -42,6 +42,13 @@ SATable.getDom.Container = function(class_) {
   }
   return SATable.getDom.Div(classes)
 }
+SATable.getDom.Row = function(class_) {
+  classes = 'row'
+  if (class_) {
+    classes += ' ' + class_
+  }
+  return SATable.getDom.Div(classes)
+}
 SATable.getDom.RowBetween = function(class_) {
   classes = 'row justify-content-between'
   if (class_) {
@@ -139,6 +146,16 @@ SATable.getDom.Span = function(class_) {
     $(span).addClass(class_)
   }
   return span
+}
+SATable.getDom.Label = function(text, class_) {
+  var label = $('<label></label>')
+  if (text) {
+    $(label).text(text)
+  }
+  if (class_) {
+    $(label).addClass(class_)
+  }
+  return label
 }
 SATable.getDom.Input = function(name, placeholder, class_) {
   var input = $('<input type="text" class="form-control" name="'+name+'" placeholder="'+placeholder+'"/>')
@@ -309,6 +326,27 @@ SATable.getDom.IconYes = function(class_) {
 }
 SATable.getDom.IconNo = function(class_) {
   var icon = $('<i class="fa fa-close fa-fw"></i>')
+  if (class_) {
+    $(icon).addClass(class_)
+  }
+  return icon
+}
+SATable.getDom.IconQuestion = function(class_) {
+  var icon = $('<i class="fa fa-question fa-fw"></i>')
+  if (class_) {
+    $(icon).addClass(class_)
+  }
+  return icon
+}
+SATable.getDom.IconEdit = function(class_) {
+  var icon = $('<i class="fa fa-pencil-square-o fa-fw"></i>')
+  if (class_) {
+    $(icon).addClass(class_)
+  }
+  return icon
+}
+SATable.getDom.IconDelete = function(class_) {
+  var icon = $('<i class="fa fa-trash fa-fw"></i>')
   if (class_) {
     $(icon).addClass(class_)
   }

@@ -8,52 +8,44 @@
 {% block sub_content2 %}
 <div class="col-lg-8 col-md-7">
   <div class="container">
-    <form id="testForm" action="{% url 'admin-meta-tests-detail' meta_problem.id test.id %}" data-method="PUT" enctype="multipart/form-data" class="form-horizontal">
-      <fieldset>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">对外可用</label>
-          <div class="col-lg-9 col-md-8">
-            <select name="available" class="form-control">
-              {% if test.available %}
-              <option value="true" selected="selected">可用</option>
-              <option value="false">不可用</option>
-              {% else %}
-              <option value="true">可用</option>
-              <option value="false" selected="selected">不可用</option>
-              {% endif %}
-            </select>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">标题</label>
-          <div class="col-lg-9 col-md-8">
-            <input maxlength="128" name="title" class="form-control" type="text" value="{{ test.title }}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">简介</label>
-          <div class="col-lg-9 col-md-8">
-            <textarea maxlength="512" name="introduction" class="form-control">{% if test.introduction %}{{ test.introduction }}{% endif %}</textarea>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">测试输入</label>
-          <div class="col-lg-9 col-md-8">
-            <textarea name="content" class="form-control">{% if test_in %}{{ test_in }}{% endif %}</textarea>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">测试输出</label>
-          <div class="col-lg-9 col-md-8">
-            <textarea name="content" class="form-control">{% if test_out %}{{ test_out }}{% endif %}</textarea>
-          </div>
-        </div>
-        <br/>
-        <div class="input-group-btn">
-          <button class="btn btn-primary" title="保存个人信息">保 存</button>
-        </div>
-      </fieldset>
-    </form>
+    <div id="testData"></div>
   </div>
 </div>
+{% endblock %}
+
+ {% block script %}
+<script>
+SATable.SimpleAjaxInfo({
+  id: 'testData',
+  title: '测试数据',
+  getMethod: 'GET',
+  updateMethod: 'PUT',
+  removeMethod: 'DELETE',
+  getURL: '{% url 'admin-meta-tests-detail' meta_problem.id test.id %}',
+  updateURL: '{% url 'admin-meta-tests-detail' meta_problem.id test.id %}',
+  removeURL: '{% url 'admin-meta-tests-detail' meta_problem.id test.id %}',
+  removeToURL: '{% url 'problem_meta_test' meta_problem.id %}',
+  items: [
+    { name: 'id', caption: '测试数据ID', type: 'Number', readOnly: true },
+    'Divide',
+    { name: 'creator', caption: '创建者', type: 'Text', readOnly: true },
+    { name: 'create_time', caption: '创建时间', type: 'Datetime', readOnly: true },
+    { name: 'updater', caption: '更新者', type: 'Text', readOnly: true },
+    { name: 'update_time', caption: '更新时间', type: 'Datetime', readOnly: true },
+    'Divide',
+    { name: 'available', caption: '对外可用', type: 'Boolean' },
+    { name: 'deleted', caption: '是否废弃', type: 'Boolean' },
+    'Divide',
+    { name: 'title', caption: '标题', type: 'Text', typeInfo: { max_length: 128 } },
+    { name: 'introduction', caption: '简介', type: 'Text', typeInfo: { article: true, max_length: 128 } },
+    'Divide',
+    { name: 'in_size', caption: '输入大小', type: 'Number', readOnly: true },
+    { name: 'out_size', caption: '输出大小', type: 'Number', readOnly: true },
+    { name: 'test_in', caption: '测试输入', type: 'Text', typeInfo: { article: true, max_length: {{ max_input }} } },
+    { name: 'test_out', caption: '测试输出', type: 'Text', typeInfo: { article: true, max_length: {{ max_input }} } },
+    'Divide',
+    { name: 'number_problem', caption: '使用题目数量', type: 'Number', readOnly: true }
+  ]
+})
+</script>
 {% endblock %}

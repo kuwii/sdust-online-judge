@@ -134,7 +134,7 @@ SAForm.requestSelectData = function(self, selectDom, item) {
     for (var i in data) {
       var it = data[i]
       var option = $('<option></option>')
-      $(option).attr('value', it.value).text(it.text)
+      $(option).val(it.value).text(it.text)
       $(selectDom).append(option)
     }
     var responseHandler = typeInfo.responseHandler

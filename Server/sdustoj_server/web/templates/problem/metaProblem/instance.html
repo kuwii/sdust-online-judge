@@ -8,52 +8,49 @@
 {% block sub_content2 %}
     <div class="col-lg-8 col-md-7">
       <div class="container">
+        <div id="metaProblem"></div>
         <form id="userInfoForm" action="{% url 'admin-meta-problems-detail' meta_problem.id %}" data-method="PUT" enctype="multipart/form-data" class="form-horizontal">
-          <fieldset>
-            <div class="form-group row">
-              <label class="col-lg-3 col-md-4 control-label">对外可用</label>
-              <div class="col-lg-9 col-md-8">
-                <select name="available" class="form-control">
-                  {% if meta_problem.available %}
-                  <option value="true" selected="selected">可用</option>
-                  <option value="false">不可用</option>
-                  {% else %}
-                  <option value="true">可用</option>
-                  <option value="false" selected="selected">不可用</option>
-                  {% endif %}
-                </select>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-lg-3 col-md-4 control-label">标题</label>
-              <div class="col-lg-9 col-md-8">
-                <input maxlength="128" name="title" class="form-control" type="text" value="{% if meta_problem.title %}{{ meta_problem.title }}{% endif %}">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-lg-3 col-md-4 control-label">简介</label>
-              <div class="col-lg-9 col-md-8">
-                <textarea maxlength="512" name="introduction" class="form-control">{% if meta_problem.introduction %}{{ meta_problem.introduction }}{% endif %}</textarea>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-lg-3 col-md-4 control-label">来源</label>
-              <div class="col-lg-9 col-md-8">
-                <input maxlength="256" name="source" class="form-control" type="text" value="{% if meta_problem.source %}{{ meta_problem.source }}{% endif %}">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-lg-3 col-md-4 control-label">作者</label>
-              <div class="col-lg-9 col-md-8">
-                <input maxlength="64" name="author" class="form-control" type="text" value="{% if meta_problem.author %}{{ meta_problem.author }}{% endif %}">
-              </div>
-            </div>
-            <br/>
-            <div class="input-group-btn">
-              <button class="btn btn-primary" title="保存个人信息">保 存</button>
-            </div>
-          </fieldset>
+
         </form>
       </div>
     </div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.SimpleAjaxInfo({
+  id: 'metaProblem',
+  title: '题元信息',
+  getMethod: 'GET',
+  updateMethod: 'PUT',
+  removeMethod: 'DELETE',
+  getURL: '{% url 'admin-meta-problems-detail' meta_problem.id %}',
+  updateURL: '{% url 'admin-meta-problems-detail' meta_problem.id %}',
+  removeURL: '{% url 'admin-meta-problems-detail' meta_problem.id %}',
+  removeToURL: '{% url 'problem_meta' %}',
+  items: [
+    { name: 'id', caption: '题元ID', type: 'Number', readOnly: true },
+    'Divide',
+    { name: 'creator', caption: '创建者', type: 'Text', readOnly: true },
+    { name: 'create_time', caption: '创建时间', type: 'Datetime', readOnly: true },
+    { name: 'updater', caption: '更新者', type: 'Text', readOnly: true },
+    { name: 'update_time', caption: '更新时间', type: 'Datetime', readOnly: true },
+    'Divide',
+    { name: 'available', caption: '对外可用', type: 'Boolean' },
+    { name: 'deleted', caption: '是否废弃', type: 'Boolean' },
+    'Divide',
+    { name: 'title', caption: '标题', type: 'Text', typeInfo: { max_length: 128 } },
+    { name: 'introduction', caption: '简介', type: 'Text', typeInfo: { article: true, max_length: 128 } },
+    'Divide',
+    { name: 'source', caption: '来源', type: 'Text', typeInfo: { max_length: 256 } },
+    { name: 'author', caption: '作者', type: 'Text', typeInfo: { max_length: 64 } },
+    'Divide',
+    { name: 'number_description', caption: '描述数量', type: 'Number', readOnly: true },
+    { name: 'number_sample', caption: '样例数量', type: 'Number', readOnly: true },
+    { name: 'number_test_data', caption: '测试数据数量', type: 'Number', readOnly: true },
+    { name: 'number_problem', caption: '题目数量', type: 'Number', readOnly: true },
+  ]
+
+})
+</script>
 {% endblock %}

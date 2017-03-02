@@ -225,7 +225,7 @@ class MetaProblemSerializers:
             class LimitField(ModelSerializer):
                 class Meta:
                     model = Limit
-                    exclude = ('problem',)
+                    exclude = ('problem', 'judge')
                     read_only_fields = _RESOURCE_READONLY + ('env_name',)
 
             class DescriptionField(ModelSerializer):
@@ -247,10 +247,10 @@ class MetaProblemSerializers:
             description = DescriptionField(many=False, read_only=True)
             sample = SampleField(many=False, read_only=True)
             description_id = PrimaryKeyRelatedField(
-                queryset=Description.objects.all(), many=False, write_only=True, required=False, allow_null=True
+                queryset=Description.objects.all(), many=False, required=False, allow_null=True
             )
             sample_id = PrimaryKeyRelatedField(
-                queryset=Sample.objects.all(), many=False, write_only=True, required=False, allow_null=True
+                queryset=Sample.objects.all(), many=False, required=False, allow_null=True
             )
 
             class Meta:

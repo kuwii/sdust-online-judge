@@ -6,6 +6,10 @@ from rest_api.permissions import GROUP_NAME_JUDGE_ADMIN, GROUP_NAME_CLIENT_ADMIN
 from rest_api.models import *
 from django.contrib.auth.models import Group
 
+from config import OJ_SETTINGS
+
+MAX_INPUT_SIZE = OJ_SETTINGS['test_data_input_max_size']
+
 
 # == Utils =============================================================================================================
 
@@ -324,8 +328,7 @@ def problem_meta_test_instance(request, mid, tid):
         'user': info,
         'meta_problem': meta_problem,
         'test': test_data,
-        'test_in': test_data.get_test_in(),
-        'test_out': test_data.get_test_out()
+        'max_input': MAX_INPUT_SIZE
     })
 
 
@@ -492,14 +495,11 @@ def problem_meta_problem_spj_instance(request, mid, pid, sid):
     prob = get_object_or_404(Problem.objects, id=int(pid))
     spj = get_object_or_404(SpecialJudge.objects, id=int(sid))
 
-    code = spj.get_code()
-
     return render(request, 'problem/metaProblem/problem/specialJudge/instance.html', {
         'user': info,
         'meta_problem': meta_problem,
         'problem': prob,
-        'spj': spj,
-        'code': code
+        'spj': spj
     })
 
 

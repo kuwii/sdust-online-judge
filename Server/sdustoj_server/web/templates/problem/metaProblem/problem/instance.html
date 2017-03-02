@@ -1,131 +1,103 @@
 {% extends "problem/metaProblem/problem/adminBasic.html" %}
 {% load staticfiles %}
 
-{% block title %}题元题目信息{% endblock %}
+{% block title %}题元内题目信息{% endblock %}
 
 {% block nav_problem_info %}active{% endblock %}
 
 {% block sub_content2 %}
 <div class="container row justify-content-sm-center container col-lg-8 col-md-7">
   <div class="col-12">
-    <form id="descriptionCreateForm" action="{% url 'admin-meta-problems-info-detail' meta_problem.id problem.id %}" data-method="PUT" enctype="multipart/form-data" class="form-horizontal">
-      <fieldset>
-        {% csrf_token %}
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">对外可用</label>
-          <div class="col-lg-9 col-md-8">
-            <select name="available" class="form-control" datatype="number">
-              {% if problem.available %}
-                <option value="true" selected="selected">可用</option>
-                <option value="false">不可用</option>
-              {% else %}
-                <option value="true">可用</option>
-                <option value="false" selected="selected">不可用</option>
-              {% endif %}
-            </select>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">标题</label>
-          <div class="col-lg-9 col-md-8">
-            <input maxlength="128" name="title" class="form-control" type="text" value="{{ problem.title }}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">简介</label>
-          <div class="col-lg-9 col-md-8">
-            <textarea maxlength="512" name="introduction" class="form-control">{% if problem.introduction %}{{problem.introduction}}{% else %}{% endif %}</textarea>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">来源</label>
-          <div class="col-lg-9 col-md-8">
-            <input maxlength="256" name="source" class="form-control" type="text" value="{% if problem.source %}{{problem.source}}{% else %}{% endif %}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">作者</label>
-          <div class="col-lg-9 col-md-8">
-            <input maxlength="64" name="author" class="form-control" type="text" value="{% if problem.author %}{{problem.source}}{% else %}{% endif %}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">描述</label>
-          <div class="col-lg-9 col-md-8">
-            <select name="description_id" class="form-control" id="descriptions">
-              <option value="" selected="selected">不使用描述</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">样例</label>
-          <div class="col-lg-9 col-md-8">
-            <select name="sample_id" class="form-control" id="samples">
-              <option value="" selected="selected">不使用样例</option>
-            </select>
-          </div>
-        </div>
-        <br/>
-        <div class="input-group-btn">
-          <button class="btn btn-primary" title="保存描述">保 存</button>
-        </div>
-      </fieldset>
-    </form>
+    <div id="problem"></div>
   </div>
 </div>
 {% endblock %}
 
 {% block script %}
 <script>
-function iSubmit() {
-  var form = $("#descriptionCreateForm")
-  var data = getFormData(form)
+var descriptions = [{ text: '不使用描述', value: null }]
+var samples = [{ text: '不使用样例', value: null }]
 
-  $.ajax({
-    type: "POST",
-    async: false,
-    url: "{% url 'admin-meta-problems-info-list' meta_problem.id %}",
-    data: data,
-    dataType: 'json',
-    success: function(ret) {
-      url = "{% url 'problem_meta_problem' meta_problem.id %}"
-      location.href = url
-    },
-    error: function(a, b, c) {
-      test_output(a)
-    }
-  })
-
-  return false
+function getOptionsDescription(ret) {
+  var results = ret.results
+  for (var i in results) {
+    var obj = results[i]
+    var text = obj.id + ': ' + obj.title
+    var value = obj.id
+    descriptions.push({ text: text, value: value })
+  }
+  return descriptions
 }
 
-function append(select_id, url, choice) {
-  ret = $.ajax({
-    type: "GET",
-    url: url,
-    dataType: "json",
-    success: function(ret) {
-      for(var i in ret.results) {
-        var it = ret.results[i]
-        var option = $("<option></option>")
-        $(option).val(it.id)
-        $(option).text(it.id + ": " + it.title)
-        if (it.id == choice) {
-          $(option).attr("selected", "selected")
-        }
-        $("#" + select_id).append(option)
-      }
-      var next = ret.next
-      if (next != null) {
-        append(select_id, next)
-      }
-    }
-  })
+function getOptionsSample(ret) {
+  var results = ret.results
+  for (var i in results) {
+    var obj = results[i]
+    var text = obj.id + ': ' + obj.title
+    var value = obj.id
+    samples.push({ text: text, value: value })
+  }
+  return samples
 }
 
-$(document).ready(function() {
-  append("descriptions", "{% url 'admin-meta-descriptions-list' meta_problem.id %}", {% if problem.description %}{{problem.description.id}}{% else %}null{% endif %})
-  append("samples", "{% url 'admin-meta-samples-list' meta_problem.id %}", {% if problem.sample %}{{problem.sample.id}}{% else %}null{% endif %})
+SATable.SimpleAjaxInfo({
+  id: 'problem',
+  title: '题元内题目',
+  getMethod: 'GET',
+  updateMethod: 'PUT',
+  removeMethod: 'DELETE',
+  getURL: '{% url 'admin-meta-problems-info-detail' meta_problem.id problem.id %}',
+  updateURL: '{% url 'admin-meta-problems-info-detail' meta_problem.id problem.id %}',
+  removeURL: '{% url 'admin-meta-problems-info-detail' meta_problem.id problem.id %}',
+  removeToURL: '{% url 'problem_meta_problem' meta_problem.id %}',
+  items: [
+    { name: 'id', caption: '题目ID', type: 'Number', readOnly: true },
+    'Divide',
+    { name: 'creator', caption: '创建者', type: 'Text', readOnly: true },
+    { name: 'create_time', caption: '创建时间', type: 'Datetime', readOnly: true },
+    { name: 'updater', caption: '更新者', type: 'Text', readOnly: true },
+    { name: 'update_time', caption: '更新时间', type: 'Datetime', readOnly: true },
+    'Divide',
+    { name: 'available', caption: '对外可用', type: 'Boolean' },
+    { name: 'deleted', caption: '是否废弃', type: 'Boolean' },
+    'Divide',
+    { name: 'title', caption: '标题', type: 'Text', typeInfo: { max_length: 128 } },
+    { name: 'introduction', caption: '简介', type: 'Text', typeInfo: { article: true, max_length: 128 } },
+    'Divide',
+    { name: 'source', caption: '来源', type: 'Text', typeInfo: { max_length: 256 } },
+    { name: 'author', caption: '作者', type: 'Text', typeInfo: { max_length: 64 } },
+    'Divide',
+    { name: 'is_special_judge', caption: '特殊评测', type: 'Boolean', readOnly: true },
+    'Divide',
+    { name: 'description_id', caption: '题意描述ID', type: 'Select', typeInfo: {
+      ajax: true,
+      ajaxInfo: {
+        type: 'GET',
+        url: '{% url 'admin-meta-descriptions-list' meta_problem.id %}',
+        dataType: 'json'
+      },
+      responseHandler: SATable.DRF.keepRequestValue,
+      dataGenerator: getOptionsSample
+    } },
+    { name: 'description', caption: '题意描述', type: 'Item', typeInfo: { field: 'content', type: 'Text', typeInfo: { markdown: true }, readOnly: true }, readOnly: true },
+    'Divide',
+    { name: 'sample_id', caption: '样例述ID', type: 'Select', typeInfo: {
+      ajax: true,
+      ajaxInfo: {
+        type: 'GET',
+        url: '{% url 'admin-meta-samples-list' meta_problem.id %}',
+        dataType: 'json'
+      },
+      responseHandler: SATable.DRF.keepRequestValue,
+      dataGenerator: getOptionsDescription
+    } },
+    { name: 'sample', caption: '样例描述', type: 'Item', typeInfo: { field: 'content', type: 'Text', typeInfo: { markdown: true }, readOnly: true }, readOnly: true },
+    'Divide',
+    { name: 'number_test_data', caption: '选用测试数据数量', type: 'Number', readOnly: true },
+    { name: 'number_limit', caption: '编程限制数量', type: 'Number', readOnly: true },
+    { name: 'number_invalid_word', caption: '禁用单词数量', type: 'Number', readOnly: true },
+  ]
+
 })
 </script>
 {% endblock %}

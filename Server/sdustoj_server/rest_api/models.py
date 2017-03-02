@@ -190,9 +190,9 @@ class Problem(Resource, TitleMixin, SourceMixin):
     meta_problem = ForeignKey(MetaProblem, related_name='problems', to_field='id')
 
     # 所选的描述，可为空
-    description = ForeignKey(Description, related_name='problems', to_field='id', null=True)
+    description = ForeignKey(Description, related_name='problems', to_field='id', null=True, on_delete=SET_NULL)
     # 所选的样例，可为空
-    sample = ForeignKey(Sample, related_name='problems', to_field='id', null=True)
+    sample = ForeignKey(Sample, related_name='problems', to_field='id', null=True, on_delete=SET_NULL)
 
     # 这道题支持哪几种编程环境的评测
     environments = ManyToManyField('Environment', related_name='problems',
