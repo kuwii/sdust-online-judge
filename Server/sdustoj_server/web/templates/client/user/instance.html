@@ -8,70 +8,48 @@
 {% block sub_content %}
 <div class="container row justify-content-sm-center">
   <div class="col-lg-8 col-md-10">
-    <form id="clientInfo" action="{% url 'admin-client-users-detail' clientUser.username %}" data-method="PATCH" enctype="multipart/form-data" class="form-horizontal">
-      <fieldset>
-        {% csrf_token %}
-        <div class="form-group row">
-              <label class="col-lg-3 col-md-4 control-label">对外可用</label>
-              <div class="col-lg-9 col-md-8">
-                <select name="is_active" class="form-control">
-                  {% if clientUser.is_active %}
-                  <option value="true" selected="selected">可用</option>
-                  <option value="false">不可用</option>
-                  {% else %}
-                  <option value="true">可用</option>
-                  <option value="false" selected="selected">不可用</option>
-                  {% endif %}
-                </select>
-              </div>
-            </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">账户名</label>
-          <div class="col-lg-9 col-md-8">
-            <input maxlength="150" name="username" class="form-control" type="text" value="{{ clientUser.username }}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">姓</label>
-          <div class="col-lg-9 col-md-8">
-            <input maxlength="30" name="last_name" class="form-control" type="text" value="{% if clientUser.last_name %}{{ clientUser.last_name }}{% endif %}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">名</label>
-          <div class="col-lg-9 col-md-8">
-            <input maxlength="30" name="first_name" class="form-control" type="text" value="{% if clientUser.first_name %}{{ clientUser.first_name }}{% endif %}">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">邮箱</label>
-          <div class="col-lg-9 col-md-8">
-            <input name="email" class="form-control" type="email" value="{% if clientUser.email %}{{ clientUser.email }}{% endif %}">
-          </div>
-        </div>
-        <br/>
-        <div class="input-group-btn">
-          <button class="btn btn-primary" title="保存信息">保 存</button>
-        </div>
-      </fieldset>
-    </form>
+    <div id="userInfo"></div>
     <hr>
-    <h3>修改密码</h3>
-    <form id="clientPassword" action="{% url 'admin-client-users-detail' clientUser.username %}" data-method="PATCH" enctype="multipart/form-data" class="form-horizontal">
-      <fieldset>
-        {% csrf_token %}
-        <div class="form-group row">
-          <label class="col-lg-3 col-md-4 control-label">新密码</label>
-          <div class="col-lg-9 col-md-8">
-            <input id="password" maxlength="128" name="password" class="form-control" type="password">
-          </div>
-        </div>
-        <br/>
-        <div class="input-group-btn">
-          <button class="btn btn-primary" title="保存信息">保 存</button>
-        </div>
-      </fieldset>
-    </form>
+    <div id="userPassword"></div>
   </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.SimpleAjaxInfo({
+  id: 'userInfo',
+  title: '用户端账号',
+  getMethod: 'GET',
+  updateMethod: 'PATCH',
+  removeMethod: 'DELETE',
+  getURL: '{% url 'admin-client-users-detail' clientUser.username %}',
+  updateURL: '{% url 'admin-client-users-detail' clientUser.username %}',
+  removeURL: '{% url 'admin-client-users-detail' clientUser.username %}',
+  removeToURL: '{% url 'client_users' %}',
+  items: [
+    { name: 'username', caption: '用户端账户名', type: 'Text', readOnly: true },
+    'Divide',
+    { name: 'last_name', caption: '姓', type: 'Text', typeInfo: { max_length: 30 } },
+    { name: 'first_name', caption: '名', type: 'Text', typeInfo: { max_length: 30 } },
+    { name: 'email', caption: '邮箱', type: 'Text', typeInfo: { email: true } },
+    'Divide',
+    { name: 'is_active', caption: '可用', type: 'Boolean' },
+    'Divide',
+    { name: 'last_login', caption: '最后登录', type: 'Datetime', readOnly: true },
+  ]
+})
+
+SATable.SimpleAjaxInfo({
+  id: 'userPassword',
+  title: '修改密码',
+  getMethod: 'GET',
+  updateMethod: 'PATCH',
+  getURL: '{% url 'admin-client-users-detail' clientUser.username %}',
+  updateURL: '{% url 'admin-client-users-detail' clientUser.username %}',
+  items: [
+    { name: 'password', caption: '新密码', type: 'Text', typeInfo: { password: true, max_length: 128 } },
+  ]
+})
+</script>
 {% endblock %}

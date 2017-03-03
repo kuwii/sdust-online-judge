@@ -44,6 +44,9 @@ SATable.SimpleAjaxInfo({
     { name: 'test_in', caption: '测试输入', type: 'Text', typeInfo: { article: true, max_length: {{ max_input }} } },
     { name: 'test_out', caption: '测试输出', type: 'Text', typeInfo: { article: true, max_length: {{ max_input }} } },
     'Divide',
+    { name: 'test_in_file', caption: '上传测试输入', type: 'File', typeInfo: { writeOnly: true } },
+    { name: 'test_out_file', caption: '上传测试输出', type: 'File', typeInfo: { writeOnly: true } },
+    'Divide',
     { name: 'number_problem', caption: '使用题目数量', type: 'Number', readOnly: true }
   ]
 })

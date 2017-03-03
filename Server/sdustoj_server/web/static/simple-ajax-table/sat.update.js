@@ -9,8 +9,17 @@ SAInfo.requestSelectData = function(self, selectDom, item, value) {
       var it = data[i]
       var option = $('<option></option>')
       $(option).val(it.value).text(it.text)
-      if (value && it.value == value) {
-        $(option).attr('selected', 'selected')
+      if (typeInfo.many) {
+        for (var i in value) {
+          if (it.value == value[i]) {
+            $(option).attr('selected', 'selected')
+            break
+          }
+        }
+      } else {
+        if (value && it.value == value) {
+          $(option).attr('selected', 'selected')
+        }
       }
       $(selectDom).append(option)
     }
@@ -58,17 +67,22 @@ SAInfo.Boolean = function(self, item, value) {
     $(optionNone).attr('selected', 'selected')
   }
 
-  $(inputGroup).hide()
   var aEdit = $(item.dom.divEdit).find('a')
-  $(aEdit).click(function() {
-    if ($(inputGroup).is(':hidden')) {
-      $(inputGroup).show()
-      $(p).hide()
-    } else {
-      $(inputGroup).hide()
-      $(p).show()
-    }
-  })
+  if (item.typeInfo && item.typeInfo.writeOnly) {
+    $(p).hide()
+    $(aEdit).hide()
+  } else {
+    $(inputGroup).hide()
+    $(aEdit).click(function() {
+      if ($(inputGroup).is(':hidden')) {
+        $(inputGroup).show()
+        $(p).hide()
+      } else {
+        $(inputGroup).hide()
+        $(p).show()
+      }
+    })
+  }
 
   div.append(p).append(inputGroup)
 
@@ -78,8 +92,16 @@ SAInfo.Select = function(self, item, value) {
   var getDom = SATable.getDom
   var div = getDom.Div('col-xs-12')
 
+  var typeInfo = item.typeInfo
+
   var p = $('<p></p>')
-  $(p).text(value)
+  if (typeInfo.many) {
+    for (var i in value) {
+      $(p).append(value[i]).append(getDom.Br())
+    }
+  } else {
+    $(p).text(value)
+  }
 
   var inputGroup = getDom.Div('input-group')
   var spanBtn = getDom.Span('input-group-btn')
@@ -89,7 +111,6 @@ SAInfo.Select = function(self, item, value) {
   $(inputGroup).append(select).append(spanBtn)
   $(spanBtn).append(btn)
 
-  var typeInfo = item.typeInfo
   if (typeInfo.many) {
     $(select).attr('multiple', 'multiple')
   }
@@ -100,22 +121,39 @@ SAInfo.Select = function(self, item, value) {
     for (var i in data) {
       var it = data[i]
       var option = $('<option></option>')
-      $(option).attr('value', it.value).text(it.text)
+      $(option).val(it.value).text(it.text)
+      if (typeInfo.many) {
+        for (var i in value) {
+          if (it.value == value[i]) {
+            $(option).attr('selected', 'selected')
+            break
+          }
+        }
+      } else {
+        if (value && it.value == value) {
+          $(option).attr('selected', 'selected')
+        }
+      }
       $(select).append(option)
     }
   }
 
-  $(inputGroup).hide()
   var aEdit = $(item.dom.divEdit).find('a')
-  $(aEdit).click(function() {
-    if ($(inputGroup).is(':hidden')) {
-      $(inputGroup).show()
-      $(p).hide()
-    } else {
-      $(inputGroup).hide()
-      $(p).show()
-    }
-  })
+  if (item.typeInfo && item.typeInfo.writeOnly) {
+    $(p).hide()
+    $(aEdit).hide()
+  } else {
+    $(inputGroup).hide()
+    $(aEdit).click(function() {
+      if ($(inputGroup).is(':hidden')) {
+        $(inputGroup).show()
+        $(p).hide()
+      } else {
+        $(inputGroup).hide()
+        $(p).show()
+      }
+    })
+  }
 
   div.append(p).append(inputGroup)
 
@@ -138,17 +176,22 @@ SAInfo.Number = function(self, item, value) {
   $(spanBtn).append(btn)
   $(input).attr('type', 'number').val(value)
 
-  $(inputGroup).hide()
   var aEdit = $(item.dom.divEdit).find('a')
-  $(aEdit).click(function() {
-    if ($(inputGroup).is(':hidden')) {
-      $(inputGroup).show()
-      $(p).hide()
-    } else {
-      $(inputGroup).hide()
-      $(p).show()
-    }
-  })
+  if (item.typeInfo && item.typeInfo.writeOnly) {
+    $(p).hide()
+    $(aEdit).hide()
+  } else {
+    $(inputGroup).hide()
+    $(aEdit).click(function() {
+      if ($(inputGroup).is(':hidden')) {
+        $(inputGroup).show()
+        $(p).hide()
+      } else {
+        $(inputGroup).hide()
+        $(p).show()
+      }
+    })
+  }
 
   div.append(p).append(inputGroup)
 
@@ -182,6 +225,11 @@ SAInfo.Text = function(self, item, value) {
     $(input).addClass('form-control').attr('name', item.name)
   } else {
     input = getDom.Input(item.name)
+    if (typeInfo && typeInfo.password) {
+      $(input).attr('type', 'password')
+    } else if (typeInfo && typeInfo.email) {
+      $(input).attr('type', 'email')
+    }
   }
 
   var btn = getDom.Button('保存')
@@ -190,28 +238,58 @@ SAInfo.Text = function(self, item, value) {
   $(spanBtn).append(btn)
   $(input).val(value)
 
-  $(inputGroup).hide()
   var aEdit = $(item.dom.divEdit).find('a')
-  $(aEdit).click(function() {
-    if ($(inputGroup).is(':hidden')) {
-      $(inputGroup).show()
-      $(ret).hide()
-    } else {
-      $(inputGroup).hide()
-      $(ret).show()
-    }
-  })
+  if (item.typeInfo && item.typeInfo.writeOnly) {
+    $(ret).hide()
+    $(aEdit).hide()
+  } else {
+    $(inputGroup).hide()
+    $(aEdit).click(function() {
+      if ($(inputGroup).is(':hidden')) {
+        $(inputGroup).show()
+        $(ret).hide()
+      } else {
+        $(inputGroup).hide()
+        $(ret).show()
+      }
+    })
+  }
 
   div.append(ret).append(inputGroup)
 
   return div
 }
 SAInfo.Datetime = function(self, item, value) {
+  // 目前仅支持只读
   var date = new Date(value)
   var dateStr = date.toLocaleString()
   var p = $('<p></p>')
   p.append(dateStr)
   return p
+}
+SAInfo.File = function(self, item, value) {
+  // 目前仅支持写入
+  var getDom = SATable.getDom
+  var div = getDom.Div('col-xs-12')
+  var typeInfo = item.typeInfo
+
+  var inputGroup = getDom.Div('input-group')
+  var spanBtn = getDom.Span('input-group-btn')
+  var input = getDom.Input(item.name)
+  $(input).attr('type', 'file')
+
+  var btn = getDom.Button('保存')
+  $(btn).attr('type', 'submit')
+  $(inputGroup).append(input).append(spanBtn)
+  $(spanBtn).append(btn)
+  $(input).val(value)
+
+  var aEdit = $(item.dom.divEdit).find('a')
+  $(aEdit).hide()
+
+  div.append(inputGroup)
+
+  return div
 }
 SAInfo.Item = function(self, item, value) {
   typeInfo = item.typeInfo
@@ -236,6 +314,7 @@ SAInfo.itemTypeDom = {
   Number: SAInfo.Number,
   Text: SAInfo.Text,
   Datetime: SAInfo.Datetime,
+  File: SAInfo.File,
   Select: SAInfo.Select,
   Item: SAInfo.Item
 }
@@ -420,6 +499,9 @@ SAInfo.requestInfo = function(self) {
       for (var i in items) {
         var item = items[i]
         if (item != 'Divide') {
+          if (item.typeInfo && item.typeInfo.writeOnly) {
+            self.fillInfo(self, item, null)
+          }
           self.fillInfo(self, item, ret[item.name])
         }
       }

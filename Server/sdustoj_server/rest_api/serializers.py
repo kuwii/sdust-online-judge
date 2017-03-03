@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer, SlugRelatedField, CharField, PrimaryKeyRelatedField
 from rest_framework.serializers import ListField
+from rest_framework.serializers import FileField
 from rest_framework.serializers import ValidationError
 
 from .models import MetaProblem, Description, Sample, TestData
@@ -139,6 +140,9 @@ class MetaProblemSerializers:
             test_out = CharField(write_only=True, allow_null=True, max_length=_INPUT_MAX,
                                  style={'base_template': 'textarea.html'})
 
+            test_in_file = FileField(write_only=True, allow_null=True, required=False)
+            test_out_file = FileField(write_only=True, allow_null=True, required=False)
+
             class Meta:
                 model = TestData
                 fields = '__all__'
@@ -147,20 +151,36 @@ class MetaProblemSerializers:
                                                          'in_size', 'out_size')
 
             def create(self, validated_data):
-                test_in = validated_data.pop('test_in')
-                if test_in is not None:
-                    validated_data['in_size'] = len(test_in)
-                    validated_data['test_in'] = test_in.encode('utf-8')
-                else:
-                    validated_data['in_size'] = 0
-                    validated_data['test_in'] = None
-                test_out = validated_data.pop('test_out')
-                if test_out is not None:
-                    validated_data['out_size'] = len(test_out)
-                    validated_data['test_out'] = test_out.encode('utf-8')
-                else:
-                    validated_data['out_size'] = 0
-                    validated_data['test_out'] = None
+                test_in = validated_data.pop('test_in', None)
+                test_out = validated_data.pop('test_out', None)
+                in_size = 0
+                out_size = 0
+                test_in_file = validated_data.pop('test_in_file', None)
+                test_out_file = validated_data.pop('test_out_file', None)
+
+                if test_in_file is not None:
+                    test_in = b''
+                    for b in test_in_file.chunks():
+                        test_in += b
+                    in_size = test_in_file.size
+                elif test_in is not None:
+                    test_in = test_in.encode('utf-8')
+                    in_size = len(test_in)
+
+                if test_out_file is not None:
+                    test_out = b''
+                    for b in test_out_file.chunks():
+                        test_out += b
+                    out_size = test_out_file.size
+                elif test_in is not None:
+                    test_out = test_out.encode('utf-8')
+                    out_size = len(test_in)
+
+                validated_data['test_in'] = test_in
+                validated_data['in_size'] = in_size
+                validated_data['test_out'] = test_out
+                validated_data['out_size'] = out_size
+
                 return super().create(validated_data)
 
         class TestDataAdminInstanceSerializer(ModelSerializer):
@@ -168,6 +188,8 @@ class MetaProblemSerializers:
                                 style={'base_template': 'textarea.html'})
             test_out = CharField(allow_null=True, max_length=_INPUT_MAX, source='get_test_out',
                                  style={'base_template': 'textarea.html'})
+            test_in_file = FileField(write_only=True, allow_null=True, required=False)
+            test_out_file = FileField(write_only=True, allow_null=True, required=False)
 
             class Meta:
                 model = TestData
@@ -177,22 +199,38 @@ class MetaProblemSerializers:
                                                          'in_size', 'out_size')
 
             def update(self, instance, validated_data):
-                if 'get_test_in' in validated_data:
-                    test_in = validated_data.pop('get_test_in')
-                    if test_in is not None:
-                        validated_data['in_size'] = len(test_in)
-                        validated_data['test_in'] = test_in.encode('utf-8')
+                if 'get_test_in' in validated_data or 'test_in_file' in validated_data:
+                    test_in = validated_data.pop('get_test_in', None)
+                    test_in_file = validated_data.pop('test_in_file', None)
+                    if test_in_file is not None:
+                        test_in = b''
+                        for b in test_in_file.chunks():
+                            test_in += b
+                        in_size = test_in_file.size
+                    elif test_in is not None:
+                        test_in = test_in.encode('utf-8')
+                        in_size = len(test_in)
                     else:
-                        validated_data['in_size'] = 0
-                        validated_data['test_in'] = None
-                if 'get_test_out' in validated_data:
-                    test_out = validated_data.pop('get_test_out')
-                    if test_out is not None:
-                        validated_data['out_size'] = len(test_out)
-                        validated_data['test_out'] = test_out.encode('utf-8')
+                        test_in = None
+                        in_size = 0
+                    validated_data['test_in'] = test_in
+                    validated_data['in_size'] = in_size
+                if 'get_test_out' in validated_data or 'test_out_file' in validated_data:
+                    test_out = validated_data.pop('get_test_out', None)
+                    test_out_file = validated_data.pop('test_out_file', None)
+                    if test_out_file is not None:
+                        test_out = b''
+                        for b in test_out_file.chunks():
+                            test_out += b
+                        out_size = test_out_file.size
+                    elif test_out is not None:
+                        test_out = test_out.encode('utf-8')
+                        out_size = len(test_out)
                     else:
-                        validated_data['in_size'] = 0
-                        validated_data['test_out'] = None
+                        test_out = None
+                        out_size = 0
+                    validated_data['test_out'] = test_out
+                    validated_data['out_size'] = out_size
 
                 return super().update(instance, validated_data)
 

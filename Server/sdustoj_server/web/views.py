@@ -1058,15 +1058,11 @@ def judge_instance(request, jid):
         return redirect(reverse('homepage'))
 
     judge = get_object_or_404(Judge.objects.all(), id=int(jid))
-    env = Environment.objects.filter(deleted=False).order_by('id')
-    judge_environments = judge.environment.all()
 
     return render(request, 'judge/judge/instance.html', {
         'user': info,
         'jid': jid,
-        'judge': judge,
-        'environments': env,
-        'judge_environments': judge_environments
+        'judge': judge
     })
 
 
