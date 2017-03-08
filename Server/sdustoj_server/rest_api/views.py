@@ -940,7 +940,7 @@ class UserViewSets:
 
 class ClientViewSets:
     class UserAdminViewSet(ModelViewSet):
-        queryset = User.objects.filter(groups=Group.objects.filter(name=GROUP_NAME_CLIENT).first()).order_by('id')
+        queryset = User.objects.filter(groups__name=GROUP_NAME_CLIENT).order_by('id')
         serializer_class = ClientSerializers.UserAdminSerializer
         lookup_field = 'username'
         permission_classes = (IsClientAdmin, )

@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 import redis
 import os
 from json import loads
 
 pool = redis.ConnectionPool(
-    host='192.168.221.132', port=6379, db=0, password='hust'
+    host='localhost', port=6379, db=0, password='hust'
 )
 r = redis.Redis(connection_pool=pool)
 

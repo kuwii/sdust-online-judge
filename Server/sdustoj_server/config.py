@@ -8,7 +8,7 @@ PG_SETTINGS = {
 }
 
 REDIS_SETTINGS = {
-    'host': '192.168.221.132',
+    'host': 'localhost',
     'port': '6379',
     'password': 'hust',
     'db': 0

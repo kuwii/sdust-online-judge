@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == SDUSTOJ 通信相关设置 ==============================================================================================
 
 # SDUSTOJ数据库的参数
@@ -11,7 +12,7 @@ pg_db = {
 
 # 用于监听SDUSTOJ消息的Redis的参数
 redis_db = {
-    'host': '192.168.221.132',
+    'host': 'localhost',
     'port': '6379',
     'password': 'hust',
     'db': 0
@@ -27,7 +28,7 @@ subscribe = [
 ]
 
 # 该评测机在SDUSTOJ中的ID
-judger_id = 4
+judger_id = 1
 
 
 # == HUSTOJ 通信相关设置 ===============================================================================================
@@ -36,13 +37,13 @@ judger_id = 4
 mysql_db = {
     'user': 'root',
     'password': 'root',
-    'host': '192.168.221.132',
+    'host': 'localhost',
     'database': 'jol'
 }
 
 # 用于HUSTOJ服务器接受消息的Redis的参数
 local_redis_db = {
-    'host': '192.168.221.132',
+    'host': 'localhost',
     'port': '6379',
     'password': 'hust',
     'db': 0

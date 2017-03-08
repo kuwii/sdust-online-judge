@@ -503,3 +503,5 @@ flycheck_*.el
 /former/
 /WenDang/
 /Client/sdustoj_client/
+!/Client/sdustoj_client/
+/Server/sdustoj_server/collected_static/

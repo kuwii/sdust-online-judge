@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from models.redis_models import get_subscribe, get_queue_info
 
 from models import pg_models, mysql_models

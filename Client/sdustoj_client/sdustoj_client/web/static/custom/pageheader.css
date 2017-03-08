@@ -1,0 +1,169 @@
+@keyframes appear
+{
+  0% {
+    opacity: 0.2;
+    left: 40px;
+    right: 20px;
+  }
+  20% {
+    opacity: 0.4;
+    left: 15px;
+    right: 12px;
+  }
+  40% {
+    opacity: 0.6;
+    left: 9px;
+    right: 6px;
+  }
+  60% {
+    opacity: 0.8;
+    left: 5px;
+    right: 3px;
+  }
+  80% {
+    opacity: 1.0;
+    left: 2px;
+    right: 1px;
+  }
+  100% {
+    opacity: 1.0;
+    left: 0px;
+    right: 0px;
+  }
+}
+
+@-moz-keyframes appear /* Firefox */
+{
+  0% {
+    opacity: 0.2;
+    left: 40px;
+    right: 20px;
+  }
+  20% {
+    opacity: 0.4;
+    left: 15px;
+    right: 12px;
+  }
+  40% {
+    opacity: 0.6;
+    left: 9px;
+    right: 6px;
+  }
+  60% {
+    opacity: 0.8;
+    left: 5px;
+    right: 3px;
+  }
+  80% {
+    opacity: 1.0;
+    left: 2px;
+    right: 1px;
+  }
+  100% {
+    opacity: 1.0;
+    left: 0px;
+    right: 0px;
+  }
+}
+
+@-webkit-keyframes appear /* Safari 和 Chrome */
+{
+  0% {
+    opacity: 0.2;
+    left: 40px;
+    right: 20px;
+  }
+  20% {
+    opacity: 0.4;
+    left: 15px;
+    right: 12px;
+  }
+  40% {
+    opacity: 0.6;
+    left: 9px;
+    right: 6px;
+  }
+  60% {
+    opacity: 0.8;
+    left: 5px;
+    right: 3px;
+  }
+  80% {
+    opacity: 1.0;
+    left: 2px;
+    right: 1px;
+  }
+  100% {
+    opacity: 1.0;
+    left: 0px;
+    right: 0px;
+  }
+}
+
+@-o-keyframes appear /* Opera */
+{
+  0% {
+    opacity: 0.2;
+    left: 40px;
+    right: 20px;
+  }
+  20% {
+    opacity: 0.4;
+    left: 15px;
+    right: 12px;
+  }
+  40% {
+    opacity: 0.6;
+    left: 9px;
+    right: 6px;
+  }
+  60% {
+    opacity: 0.8;
+    left: 5px;
+    right: 3px;
+  }
+  80% {
+    opacity: 1.0;
+    left: 2px;
+    right: 1px;
+  }
+  100% {
+    opacity: 1.0;
+    left: 0px;
+    right: 0px;
+  }
+}
+
+.screen-bg {
+  padding: 4rem 10rem 4rem 10rem;
+  background-image: linear-gradient(90deg,#003F6F,#005DA3,#2977B2);
+}
+
+.div-page-head-lg {
+  padding: 2rem 0rem 2rem 20%;
+  margin-bottom: 2em;
+  background-image: linear-gradient(100deg,#003F6F,#005DA3,#2977B2);
+}
+
+.div-page-head-md {
+  padding: 0.5rem 20% 0.5rem 20%;
+  margin-bottom: 2em;
+  background-image: linear-gradient(100deg,#003F6F,#005DA3,#2977B2);
+}
+
+.homepage-text {
+
+  padding: 2rem 0rem 2rem 0rem;
+  margin: 0rem 0rem 0rem 2rem;
+  ont-family: ´微软雅黑´;
+  background-image: linear-gradient(100deg,#619AC6,#5F99C5,#92B9D7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.appear-ani {
+  animation: appear 0.5s;
+  -moz-animation: appear 0.5s;
+  -webkit-animation: appear 0.5s;
+  -o-animation: appear 0.5s;
+}

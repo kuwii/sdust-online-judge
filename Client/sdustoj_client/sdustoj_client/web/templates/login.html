@@ -1,0 +1,81 @@
+{% extends "meta.html" %}
+{% load staticfiles %}
+
+{% block title %}登录{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href='{% static "custom/pageheader.css" %}'>
+{% block css %}{% endblock %}
+{% endblock %}
+
+{% block body_class %}screen-bg{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row justify-content-sm-center hidden-sm-down">
+    <div class="col-12 col-md-auto">
+      <a href="{% url 'web-home' %}"><img class="appear-ani" width="150" src='{% static "img/SDUST_LOGO_LG.gif" %}' /></a>
+    </div>
+  </div>
+  <div class="row justify-content-sm-center hidden-sm-down">
+    <div class="col-12 col-md-auto">
+      <h3 id="h-message" class="text-muted" style="margin-bottom: 20px;">
+        <font class="hidden-md-down" color="white">登录到SDUST Online Judge</font>
+        <font class="hidden-lg-up hidden-sm-down" color="white">登录</font>
+      </h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3 col-md-1"></div>
+    <div class="jumbotron col-lg-6 col-md-10 col-sm-12 col-xs-12 bg-faded">
+      <div class="row justify-content-sm-center hidden-md-up">
+        <div class="col-12 col-md-auto">
+          <h3 id="h-message-sm" class="text-muted" style="margin-bottom: 20px;">
+            <font color="black">登录</font>
+          </h3>
+        </div>
+      </div>
+      <form method="post" id="form-login" onsubmit="login();return false;">
+        {% csrf_token %}
+        <div id="div-username" class="form-group row">
+          <label class="col-lg-3 form-control-label" for="input-username">用户</label>
+          <div class="col-lg-9">
+            <input type="text" maxlength="30" class="form-control" id="input-username" name="username" placeholder="请输入用户名">
+          </div>
+        </div>
+        <div id="div-password" class="form-group row" style="margin-bottom: 40px;">
+          <label class="col-lg-3 form-control-label" for="input-password">密码</label>
+          <div class="col-lg-9  ">
+            <input type="password" maxlength="32" class="form-control" id="input-password" name="password" placeholder="请输入密码">
+          </div>
+        </div>
+        <span class="input-group-btn">
+          <button id="btn-sign-in" class="btn btn-primary col-xs-12" type="submit">登录</button>
+        </span>
+      </form>
+    </div>
+    <div class="col-lg-3 col-md-2"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function login() {
+  var form = $("#form-login")
+  var data = getFormData(form)
+
+  $.ajax({
+    type: "POST",
+    async: false,
+    url: "{% url 'api-login-list' %}",
+    data: data,
+    success: function(ret) {
+      location.href = document.referrer
+    }
+  })
+
+  return false
+}
+</script>
+{% endblock %}

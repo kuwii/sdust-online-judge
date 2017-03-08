@@ -79,7 +79,7 @@ SATable.SimpleAjaxInfo({
       responseHandler: SATable.DRF.keepRequestValue,
       dataGenerator: getOptionsSample
     } },
-    { name: 'description', caption: '题意描述', type: 'Item', typeInfo: { field: 'content', type: 'Text', typeInfo: { markdown: true }, readOnly: true }, readOnly: true },
+    { name: 'description', caption: '题意描述', type: 'Item', typeInfo: { field: 'content', type: 'Text', typeInfo: { markdowFn: true }, readOnly: true }, readOnly: true },
     'Divide',
     { name: 'sample_id', caption: '样例述ID', type: 'Select', typeInfo: {
       ajax: true,

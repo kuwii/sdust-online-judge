@@ -1,0 +1,60 @@
+<!doctype html>
+
+{% load staticfiles %}
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %} - SDUST Online Judge</title>
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <link rel="apple-touch-icon" href='{% static "html5-boilerplate/apple-touch-icon.png" %}'>
+    <link rel="icon" type="image/png" href='{% static "html5-boilerplate/favicon.ico" %}'>
+    <link rel="stylesheet" href='{% static "html5-boilerplate/css/normalize.css" %}'>
+    <link rel="stylesheet" href='{% static "html5-boilerplate/css/main.css" %}'>
+    <script src='{% static "html5-boilerplate/js/vendor/modernizr-2.8.3.min.js" %}'></script>
+
+    <link rel="stylesheet" href='{% static "bootstrap/css/tether.min.css" %}'>
+    <link rel="stylesheet" href='{% static "bootstrap/css/bootstrap.min.css" %}'>
+    <link rel="stylesheet" href='{% static "font_awesome/css/font-awesome.min.css" %}'>
+    <link rel="stylesheet" href='{% static "zTree/css/metroStyle/metroStyle.css" %}'>
+    <link rel="stylesheet" href='{% static "custom/utils.css" %}'>
+
+    {% block head %}{% endblock %}
+  </head>
+
+  <body class="{% block body_class %}{% endblock %}">
+  <!--[if lt IE 10]>
+    <p class="browserupgrade">您使用的浏览器<strong>版本过低</strong>，并不能与本站完美兼容。 请访问<a href="http://browsehappy.com/">此链接</a>获得完整的浏览体验。</p>
+  <![endif]-->
+
+  {% block body %}{% endblock %}
+
+  <script>
+    window.drf = {
+      csrfHeaderName: "X-CSRFTOKEN",
+      csrfCookieName: "csrftoken"
+    };
+  </script>
+  <script src='{% static "jQuery/jquery-3.1.1.min.js" %}'></script>
+  <script src='{% static "html5-boilerplate/js/plugins.js" %}'></script>
+  <script src='{% static "html5-boilerplate/js/main.js" %}'></script>
+  <script src='{% static "rest_framework/js/csrf.js" %}'></script>
+  <script src='{% static "bootstrap/js/tether.min.js" %}'></script>
+  <script src='{% static "bootstrap/js/bootstrap.min.js" %}'></script>
+  <script src='{% static "js-cookie/js.cookie-2.1.3.min.js" %}'></script>
+  <script src='{% static "custom/utils.js" %}'></script>
+  <script src='{% static "custom/formAjax.js" %}'></script>
+  <script src='{% static "simple-ajax-table/sat.core.js" %}'></script>
+  <script src='{% static "simple-ajax-table/sat.create.js" %}'></script>
+  <script src='{% static "simple-ajax-table/sat.update.js" %}'></script>
+  <script src='{% static "simple-ajax-table/sat.drf.js" %}'></script>
+  <script src='{% static "markdown/markdown.min.js" %}'></script>
+  <script src='{% static "zTree/js/jquery.ztree.all.min.js" %}'></script>
+  {% block basic_script %}{% endblock %}
+  {% block script %}{% endblock %}
+  </body>
+</html>

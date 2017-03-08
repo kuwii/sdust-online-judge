@@ -21,11 +21,10 @@ from web.urls import url_patterns as web_urls
 from web.views import to_home
 
 urlpatterns = [
-    url(r'^$', to_home, name='to_home'),
-    url(r'^admin/', admin.site.urls),
-    url(r'^api-admin/', include(admin_api_urls)),
-    url(r'^api/', include(api_urls)),
-    url(r'^web/', include(web_urls)),
-    url(r'^api-docs/', include('rest_framework_docs.urls')),
+    url(r'^JudgeAdmin/$', to_home, name='to_home'),
+    url(r'^JudgeAdmin/api-admin/', include(admin_api_urls)),
+    url(r'^JudgeAdmin/api/', include(api_urls)),
+    url(r'^JudgeAdmin/web/', include(web_urls)),
+    url(r'^JudgeAdmin/api-docs/', include('rest_framework_docs.urls')),
     # url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
