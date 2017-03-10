@@ -9,6 +9,8 @@
 <div class="col-lg-8 col-md-7">
   <div class="container">
     <div id="testData"></div>
+    <div id="testDataData"></div>
+    <div id="testDataFile"></div>
   </div>
 </div>
 {% endblock %}
@@ -19,7 +21,7 @@ SATable.SimpleAjaxInfo({
   id: 'testData',
   title: '测试数据',
   getMethod: 'GET',
-  updateMethod: 'PUT',
+  updateMethod: 'PATCH',
   removeMethod: 'DELETE',
   getURL: '{% url 'admin-meta-tests-detail' meta_problem.id test.id %}',
   updateURL: '{% url 'admin-meta-tests-detail' meta_problem.id test.id %}',
@@ -41,13 +43,32 @@ SATable.SimpleAjaxInfo({
     'Divide',
     { name: 'in_size', caption: '输入大小', type: 'Number', readOnly: true },
     { name: 'out_size', caption: '输出大小', type: 'Number', readOnly: true },
-    { name: 'test_in', caption: '测试输入', type: 'Text', typeInfo: { article: true, max_length: {{ max_input }} } },
-    { name: 'test_out', caption: '测试输出', type: 'Text', typeInfo: { article: true, max_length: {{ max_input }} } },
-    'Divide',
-    { name: 'test_in_file', caption: '上传测试输入', type: 'File', typeInfo: { writeOnly: true } },
-    { name: 'test_out_file', caption: '上传测试输出', type: 'File', typeInfo: { writeOnly: true } },
     'Divide',
     { name: 'number_problem', caption: '使用题目数量', type: 'Number', readOnly: true }
+  ]
+})
+SATable.SimpleAjaxInfo({
+  id: 'testDataData',
+  title: '修改测试数据',
+  getMethod: 'GET',
+  updateMethod: 'PATCH',
+  getURL: '{% url 'admin-meta-tests-detail' meta_problem.id test.id %}',
+  updateURL: '{% url 'admin-meta-tests-detail' meta_problem.id test.id %}',
+  items: [
+    { name: 'test_in', caption: '测试输入', type: 'Text', typeInfo: { article: true, max_length: {{ max_input }} } },
+    { name: 'test_out', caption: '测试输出', type: 'Text', typeInfo: { article: true, max_length: {{ max_input }} } }
+  ]
+})
+SATable.SimpleAjaxInfo({
+  id: 'testDataFile',
+  title: '上传测试数据',
+  getMethod: 'GET',
+  updateMethod: 'PATCH',
+  getURL: '{% url 'admin-meta-tests-detail' meta_problem.id test.id %}',
+  updateURL: '{% url 'admin-meta-tests-detail' meta_problem.id test.id %}',
+  items: [
+    { name: 'test_in_file', caption: '上传测试输入', type: 'File', typeInfo: { writeOnly: true } },
+    { name: 'test_out_file', caption: '上传测试输出', type: 'File', typeInfo: { writeOnly: true } }
   ]
 })
 </script>

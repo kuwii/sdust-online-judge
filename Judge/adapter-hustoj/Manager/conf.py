@@ -36,7 +36,7 @@ judger_id = 1
 # HUSTOJ数据库的参数
 mysql_db = {
     'user': 'root',
-    'password': 'root',
+    'password': 'big_boss',
     'host': 'localhost',
     'database': 'jol'
 }

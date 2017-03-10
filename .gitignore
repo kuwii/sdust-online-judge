@@ -505,3 +505,4 @@ flycheck_*.el
 /Client/sdustoj_client/
 !/Client/sdustoj_client/
 /Server/sdustoj_server/collected_static/
+/Judge/adapter-hustoj/Client/client_writer.log
