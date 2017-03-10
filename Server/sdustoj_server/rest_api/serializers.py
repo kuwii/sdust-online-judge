@@ -60,6 +60,11 @@ class EnvironmentSerializers:
 
             extra_kwargs = _RESOURCE_KWARGS
 
+        def update(self, instance, validated_data):
+            instance = super().update(instance, validated_data)
+            instance.limits.update(env_name=instance.name)
+            return instance
+
     class EnvironmentSerializer(ModelSerializer):
         class Meta:
             model = Environment
@@ -166,15 +171,21 @@ class MetaProblemSerializers:
                 elif test_in is not None:
                     test_in = test_in.encode('utf-8')
                     in_size = len(test_in)
+                else:
+                    test_in = None
 
                 if test_out_file is not None:
                     test_out = b''
                     for b in test_out_file.chunks():
                         test_out += b
                     out_size = test_out_file.size
-                elif test_in is not None:
+                elif test_out is not None:
                     test_out = test_out.encode('utf-8')
-                    out_size = len(test_in)
+                    out_size = len(test_out)
+                else:
+                    test_out = None
+
+                print(test_in)
 
                 validated_data['test_in'] = test_in
                 validated_data['in_size'] = in_size
