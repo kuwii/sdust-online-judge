@@ -1,0 +1,11 @@
+{% extends "adminBasic.html" %}
+{% load staticfiles %}
+
+{% block sub_nav %}
+<li class="nav-item">
+  <a class="nav-link {% block nav_site %}{% endblock %}" href="{% url 'web-admins' %}">网站管理人员</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link {% block nav_all %}{% endblock %}" href="{% url 'web-users' %}">所有用户</a>
+</li>
+{% endblock %}

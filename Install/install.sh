@@ -81,7 +81,7 @@ sudo apt-get install -y make flex g++ clang libmysql++-dev mono-gmcs subversion
 sudo  /usr/sbin/useradd -m -u 1536 judge
 #compile and install the core
 cd hustoj-read-only/core/
-sudo ./make.sh
+sudo sh make.sh
 cd ../..
 #create work dir set default conf
 sudo    mkdir /home/judge

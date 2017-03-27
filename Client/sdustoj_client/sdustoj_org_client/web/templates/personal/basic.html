@@ -1,0 +1,48 @@
+{% extends "personal/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="row justify-content-sm-center">
+    <div class="col-lg-3 col-md-4">
+      <div class="container">
+        <h1>{{ user_info.user.username }}</h1>
+        <h4>
+          {% if user_info.user.name %}
+            {{ user_info.user.name }}
+          {% else %}
+            尚未设置姓名
+          {% endif %}
+        </h4>
+        <br/>
+        <br/>
+        <p>注册时间：<br><small id="register-time"></small></p>
+        <p>上次登录：<br><small id="last-login"></small></p>
+        <p>登录IP：<br><small id="ip"></small></p>
+      </div>
+      <br class="hidden-md-up">
+      <br class="hidden-md-up">
+    </div>
+    <div class="nav-divider hidden-sm-down"></div>
+    {% block sub_content2 %}{% endblock %}
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  $.ajax({
+    type: 'GET',
+    url: '{% url 'api-personal-info-detail' user_info.user.username %}',
+    dataType: 'json',
+    success: function(ret) {
+      createTime = (new Date(ret.create_time)).toLocaleString()
+      $('#register-time').text(createTime)
+      lastLogin = (new Date(ret.last_login)).toLocaleString()
+      $('#last-login').text(lastLogin)
+      $('#ip').text(ret.ip)
+    }
+  })
+</script>
+{% block script2 %}{% endblock %}
+{% endblock %}
