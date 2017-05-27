@@ -58,7 +58,7 @@ sudo chown postgres /etc/postgresql/9.6/main/pg_hba.conf
 sudo chown postgres /etc/postgresql/9.6/main/postgresql.conf
 # Configure Redis
 sudo mv /etc/redis/redis.conf /etc/redis/redis.conf.bak
-sudo mv redis.conf /etc/redis/redis.conf
+sudo cp redis.conf /etc/redis/redis.conf
 sudo chmod 644 /etc/redis/redis.conf
 sudo chown root /etc/redis/redis.conf
 # Create Database of PostgreSQL

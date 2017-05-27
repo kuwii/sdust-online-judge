@@ -318,6 +318,7 @@ class MetaProblemSerializers:
 
                 Utils.check_in_meta(obj_name='description', validated_data=validated_data, instance=instance)
                 Utils.check_in_meta(obj_name='sample', validated_data=validated_data, instance=instance)
+
                 return super().update(instance, validated_data)
 
         # -- Components -------------------------------------------------------

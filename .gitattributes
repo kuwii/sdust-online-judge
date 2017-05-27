@@ -5,6 +5,17 @@ Server/sdustoj_server/web/static/img/* linguist-vendored
 Server/sdustoj_server/web/static/jQuery/* linguist-vendored
 Server/sdustoj_server/web/static/js-cookie/* linguist-vendored
 Server/sdustoj_server/web/static/markdown/* linguist-vendored
+Server/sdustoj_server/web/static/simple-ajax-table/* linguist-vendored
 Server/sdustoj_server/web/static/zTree/* linguist-vendored
-Install/* linguist-vendored
 
+Client/sdustoj_client/sdustoj_client/web/static/bootstrap/* linguist-vendored
+Client/sdustoj_client/sdustoj_client/web/static/font_awesome/* linguist-vendored
+Client/sdustoj_client/sdustoj_client/web/static/html5-boilerplate/* linguist-vendored
+Client/sdustoj_client/sdustoj_client/web/static/img/* linguist-vendored
+Client/sdustoj_client/sdustoj_client/web/static/jQuery/* linguist-vendored
+Client/sdustoj_client/sdustoj_client/web/static/js-cookie/* linguist-vendored
+Client/sdustoj_client/sdustoj_client/web/static/markdown/* linguist-vendored
+Client/sdustoj_client/sdustoj_client/web/static/simple-ajax-table/* linguist-vendored
+Client/sdustoj_client/sdustoj_client/web/static/zTree/* linguist-vendored
+
+Install/* linguist-vendored

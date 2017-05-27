@@ -361,6 +361,10 @@ SATable.types.Datetime = function(content, column, info) {
   var date = new Date(content)
   return date.toLocaleString()
 }
+SATable.types.Date = function(content, column, info) {
+  var date = new Date(content)
+  return date.toLocaleDateString()
+}
 SATable.types.Link = function(content, column, info) {
   var typeInfo = column.typeInfo
   var url = typeInfo.base_url + info[typeInfo.key] + '/'
@@ -368,9 +372,6 @@ SATable.types.Link = function(content, column, info) {
 }
 SATable.types.Text = function(content, column, info) {
   return content
-}
-SATable.types.Field = function(content, column, info) {
-  return content[column.typeInfo.field]
 }
 
 SATable.InputType = {

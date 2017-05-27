@@ -1,0 +1,80 @@
+{% extends "meta.html" %}
+{% load staticfiles %}
+
+{% block head %}
+<link rel="stylesheet" href='{% static "custom/pageheader.css" %}'>
+{% block css %}{% endblock %}
+{% endblock %}
+
+{% block title %}首页{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-toggleable-md navbar-light bg-light clearfix">
+  <div class="container">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand hidden-xs-down" href="{% url 'web-to-home' %}">SDUSTOJ</a>
+    <a class="navbar-brand hidden-sm-up">&nbsp</a>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+
+      </ul>
+      <ul class="navbar-nav mr-auto mr-sm-2">
+        {% if not user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'web-login' %}">登录</a>
+        </li>
+        {% else %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" id="navbarUserMenu" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user_info.name }}</a>
+          <div class="dropdown-menu" aria-labelledby="navbarUserMenu">
+            <a class="dropdown-item" href="{% url 'web-personal-info' %}">个人信息</a>
+            <a class="dropdown-item" href="javascript:void(0)" id="btnLogout">注销</a>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+{% block page_head %}
+<div class="div-page-head-md clearfix" id="content">
+  <div class="container appear-ani">
+    <nav class="navbar navbar-toggleable-md navbar-inverse clearfix">
+      <div class="container row">
+        <div>
+          <img width="70" style="margin-right:20%;" src='{% static "img/SDUST_LOGO.gif" %}' />
+        </div>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#subNavbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="subNavbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            {% block sub_nav %}{% endblock %}
+          </ul>
+        </div>
+        </div>
+      </nav>
+  </div>
+</div>
+{% endblock %}
+{% block content %}{% endblock %}
+{% endblock %}
+
+{% block basic_script %}
+<script>
+  $(document).ready(function () {
+    $("#btnLogout").click(function() {
+      $.ajax({
+        type: "GET",
+        async: false,
+        url: "{% url 'api-logout-list' %}",
+        success: function(ret) {
+          window.location.reload()
+        }
+      })
+    })
+  })
+</script>
+{% endblock %}

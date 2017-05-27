@@ -101,6 +101,17 @@ class EnvironmentAdminFilter(ResourceFilter):
         fields = ResourceFilter.resource_fields + ('id',)
 
 
+class EnvironmentFilter(FilterSet):
+    create_time_gte = django_filters.DateTimeFilter(name='create_time', lookup_expr='gte')
+    create_time_lte = django_filters.DateTimeFilter(name='create_time', lookup_expr='lte')
+    update_time_gte = django_filters.DateTimeFilter(name='update_time', lookup_expr='gte')
+    update_time_lte = django_filters.DateTimeFilter(name='update_time', lookup_expr='lte')
+
+    class Meta:
+        model = Environment
+        fields = ('id', 'name', 'create_time', 'update_time',)
+
+
 # == User ==============================================================================================================
 
 class UserAdminFilter(FilterSet):

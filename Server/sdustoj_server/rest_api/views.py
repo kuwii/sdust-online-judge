@@ -34,7 +34,7 @@ from .serializers import EnvironmentSerializers, UserSerializers
 from .serializers import ClientSerializers
 
 from .filters import MetaProblemFilters
-from .filters import EnvironmentAdminFilter
+from .filters import EnvironmentAdminFilter, EnvironmentFilter
 from .filters import UserAdminFilter
 from .filters import SubmissionFilters
 
@@ -563,6 +563,7 @@ class EnvironmentViewSets:
         serializer_class = EnvironmentSerializers.EnvironmentSerializer
         lookup_field = 'id'
         permission_classes = (IsAuthenticated, )
+        filter_class = EnvironmentFilter
         search_fields = ('name', )
         ordering_fields = ('id', 'name', 'create_time', 'update_time')
 

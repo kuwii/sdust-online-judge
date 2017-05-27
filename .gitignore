@@ -260,7 +260,6 @@ jspm_packages
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
 *$py.class
 
 # C extensions
@@ -502,7 +501,11 @@ flycheck_*.el
 
 /former/
 /WenDang/
-/Client/sdustoj_client/
-!/Client/sdustoj_client/
 /Server/sdustoj_server/collected_static/
 /Judge/adapter-hustoj/Client/client_writer.log
+/Install/installation_logs/
+/sdustoj_client/API.md
+!/Server/sdustoj_server/rest_api/models.py
+/Client/sdustoj_client/environment_updater_cache
+/Client/sdustoj_client/problem_updater_cache
+/Client/sdustoj_client/category_updater_cache
