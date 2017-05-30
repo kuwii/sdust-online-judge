@@ -103,6 +103,24 @@ class Utils(object):
                 context=context
             )
 
+        @staticmethod
+        def root(request, template, context=None):
+            return Utils.Render._identity_render(
+                request=request,
+                template=template,
+                id_expect=(IdentityChoices.root, ),
+                context=context
+            )
+
+        @staticmethod
+        def user_admin(request, template, context=None):
+            return Utils.Render._identity_render(
+                request=request,
+                template=template,
+                id_expect=(IdentityChoices.user_admin, IdentityChoices.root,),
+                context=context
+            )
+
 
 class MainPages(object):
     @staticmethod
@@ -130,3 +148,31 @@ class PersonalPages(object):
     @staticmethod
     def password(request):
         return Utils.Render.all_user(request, 'personal/password.html')
+
+
+class UserAdminPages(object):
+    class User(object):
+        @staticmethod
+        def list(request):
+            return Utils.Render.user_admin(request, 'user/user/list.html')
+
+        @staticmethod
+        def create(request):
+            return Utils.Render.user_admin(request, 'user/user/create.html')
+
+        @staticmethod
+        def instance(request, username):
+            return Utils.Render.user_admin(request, 'user/user/instance.html', {'u': username})
+
+    class Admin(object):
+        @staticmethod
+        def list(request):
+            return Utils.Render.user_admin(request, 'user/admin/list.html')
+
+        @staticmethod
+        def create(request):
+            return Utils.Render.user_admin(request, 'user/admin/create.html')
+
+        @staticmethod
+        def instance(request, username):
+            return Utils.Render.user_admin(request, 'user/admin/instance.html', {'u': username})

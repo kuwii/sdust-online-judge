@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
-from rest_api.urls import api_patterns
+from rest_api.urls import api_patterns, admin_patterns
 from web.urls import url_patterns
 from web.views import MainPages
 
@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^JudgeOnline/$', MainPages.to_home, name='web-to-home'),
     url(r'^JudgeOnline/web/', include(url_patterns)),
     url(r'^JudgeOnline/api/', include(api_patterns)),
+    url(r'^JudgeOnline/api-admin/', include(admin_patterns)),
 ]

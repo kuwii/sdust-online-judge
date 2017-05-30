@@ -125,7 +125,8 @@ class UserProfile(Resource):
     def get_identities(self):
         ret = []
         for k, v in self.identities.items():
-            ret.append(k)
+            if v is True or len(v) > 0:
+                ret.append(k)
         return ret
 
     def update_identities(self):

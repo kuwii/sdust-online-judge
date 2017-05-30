@@ -1,6 +1,25 @@
 from rest_framework import routers
 
-from .views import PersonalViewSets
+from .views import PersonalViewSets, UserViewSets
+
+
+admin_router = routers.DefaultRouter()
+
+admin_router.register(
+    r'roots', UserViewSets.RootList.RootAdminViewSet, base_name='admin-root')
+admin_router.register(
+    r'roots', UserViewSets.RootInstance.RootAdminViewSet, base_name='admin-root')
+admin_router.register(
+    r'admins', UserViewSets.AdminList.AdminAdminViewSet, base_name='admin-admin')
+admin_router.register(
+    r'admins', UserViewSets.AdminInstance.AdminAdminViewSet, base_name='admin-admin')
+admin_router.register(
+    r'users', UserViewSets.UserList.UserAdminViewSet, base_name='admin-user')
+admin_router.register(
+    r'users', UserViewSets.UserInstance.UserAdminViewSet, base_name='admin-user')
+
+admin_patterns = []
+admin_patterns += admin_router.urls
 
 
 api_router = routers.DefaultRouter()
