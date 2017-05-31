@@ -1,0 +1,33 @@
+{% extends "organization/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}管理机构{% endblock %}
+
+{% block nav_organization %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+    <div id="organization"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.DRFTable({
+  id: 'organization',
+  title: '所有机构',
+  url: "{% url 'admin-organization-list' %}",
+  search: true,
+  columns: [
+    { name: 'name', caption: '机构ID', sort: true, type: 'Link', typeInfo: { base_url: '{% url 'web-organization' %}info/', key: 'name' } },
+    { name: "caption", caption: "名称", sort: true, type: 'Link', typeInfo: { base_url: '{% url 'web-organization' %}info/', key: 'name' } },
+    { name: 'create_time', caption: '创建时间', sort: true, type: 'Datetime' },
+    { name: 'update_time', caption: '最后更新', sort: true, type: 'Datetime' },
+    { name: "available", caption: "可用", type: 'Boolean' },
+  ],
+  createURL: "{% url 'web-organization-create' %}"
+})
+</script>
+{% endblock %}

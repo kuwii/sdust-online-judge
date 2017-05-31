@@ -1,0 +1,32 @@
+{% extends "organization/adminBasic.html" %}
+{% load staticfiles %}
+
+{% block title %}创建{% endblock %}
+
+{% block nav_organization %}active{% endblock %}
+
+{% block sub_content %}
+<div class="container">
+  <div class="col-xs-12">
+    <div id="organization"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+SATable.SimpleAjaxForm({
+  id: 'organization',
+  method: 'POST',
+  toSuccess: '{% url 'web-organization' %}',
+  url: '{% url 'admin-organization-list' %}',
+  items: [
+    { name: 'available', caption: '可用', type: 'Boolean', defaultTrue: true },
+    { name: 'name', caption: '机构ID', type: 'Text', typeInfo: { max_length: 32 } },
+    { name: 'parent', caption: '上级机构ID', type: 'Text', typeInfo: { max_length: 32 } },
+    { name: 'caption', caption: '机构名称', type: 'Text', typeInfo: { max_length: 150 } },
+    { name: 'introduction', caption: '简介', type: 'Text', typeInfo: { article:true, max_length: 150 } },
+  ]
+})
+</script>
+{% endblock %}

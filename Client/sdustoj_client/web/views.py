@@ -121,6 +121,15 @@ class Utils(object):
                 context=context
             )
 
+        @staticmethod
+        def org_admin(request, template, context=None):
+            return Utils.Render._identity_render(
+                request=request,
+                template=template,
+                id_expect=(IdentityChoices.org_admin, IdentityChoices.root,),
+                context=context
+            )
+
 
 class MainPages(object):
     @staticmethod
@@ -176,3 +185,20 @@ class UserAdminPages(object):
         @staticmethod
         def instance(request, username):
             return Utils.Render.user_admin(request, 'user/admin/instance.html', {'u': username})
+
+
+class OrganizationAdminPages(object):
+    class Organization(object):
+        @staticmethod
+        def list(request):
+            return Utils.Render.org_admin(request, 'organization/list.html')
+
+        @staticmethod
+        def create(request):
+            return Utils.Render.org_admin(request, 'organization/create.html')
+
+        @staticmethod
+        def instance(request, oid):
+            return Utils.Render.org_admin(request, 'organization/instance.html', {
+                'oid': oid
+            })

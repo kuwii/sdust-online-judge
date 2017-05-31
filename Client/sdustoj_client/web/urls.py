@@ -1,5 +1,5 @@
 from django.conf.urls import url, include
-from .views import MainPages, PersonalPages, UserAdminPages
+from .views import MainPages, PersonalPages, UserAdminPages, OrganizationAdminPages
 
 
 personal_patterns = [
@@ -20,10 +20,17 @@ admin_patterns = [
     url(r'^info/(\S+)/', UserAdminPages.Admin.instance, name='web-admin-instance'),
 ]
 
+org_patterns = [
+    url(r'^$', OrganizationAdminPages.Organization.list, name='web-organization'),
+    url(r'^create/', OrganizationAdminPages.Organization.create, name='web-organization-create'),
+url(r'^info/(\S+)/', OrganizationAdminPages.Organization.instance, name='web-organization-instance'),
+]
+
 url_patterns = [
     url(r'home/', MainPages.home, name='web-home'),
     url(r'login/', MainPages.login, name='web-login'),
     url(r'^personal/', include(personal_patterns)),
     url(r'^users/', include(user_patterns)),
     url(r'^admins/', include(admin_patterns)),
+    url(r'^organizations/', include(org_patterns)),
 ]

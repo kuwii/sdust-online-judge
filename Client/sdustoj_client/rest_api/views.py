@@ -5,9 +5,10 @@ from django.utils import timezone
 from .models import *
 from . import permissions
 from .serializers import PersonalSerializers, UserSerializers
+from .serializers import OrganizationSerializers
 from .utils import UserDisabled, AlreadyLogin
 from .utils import ListResourceViewSet, InstanceResourceViewSet
-from .permissions import IsRoot, IsUserAdmin
+from .permissions import IsRoot, IsUserAdmin, IsOrgAdmin
 
 
 class PersonalViewSets(object):
@@ -124,3 +125,42 @@ class UserViewSets(object):
             serializer_class = UserSerializers.InstanceAdmin
             permission_classes = (IsUserAdmin,)
             lookup_field = 'username'
+
+
+class OrganizationViewSets(object):
+    class OrganizationList(object):
+        class OrganizationAdminViewSet(ListResourceViewSet):
+            queryset = getattr(Organization, 'objects').exclude(name='ROOT').order_by('id')
+            serializer_class = OrganizationSerializers.Organization.ListAdmin
+            permission_classes = (IsOrgAdmin,)
+            search_fields = ('name', 'caption')
+            ordering_fields = ('name', 'caption', 'parent',
+                               'number_organizations',
+                               'number_students',
+                               'number_teachers',
+                               'number_admins')
+
+            def perform_create(self, serializer):
+                instance = super().perform_create(serializer)
+                instance.parent.update_numbers()
+                return instance
+
+    class OrganizationInstance(object):
+        class OrganizationAdminViewSet(InstanceResourceViewSet):
+            queryset = getattr(Organization, 'objects').exclude(name='ROOT').order_by('id')
+            serializer_class = OrganizationSerializers.Organization.InstanceAdmin
+            permission_classes = (IsOrgAdmin,)
+            lookup_field = 'name'
+
+            def perform_update(self, serializer):
+                parent = serializer.instance.parent
+                instance = super().perform_update(serializer)
+                if parent != instance.parent:
+                    parent.update_numbers()
+                    instance.parent.update_numbers()
+                return instance
+
+            def perform_destroy(self, instance):
+                parent = instance.parent
+                super().perform_destroy(instance)
+                parent.update_numbers()

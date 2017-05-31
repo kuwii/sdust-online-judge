@@ -170,3 +170,89 @@ class UserSerializers(object):
             ret = super().update(instance, validated_data)
             ret.update_identities()
             return instance
+
+
+class OrganizationSerializers(object):
+    class Organization(object):
+        class ListAdmin(serializers.ModelSerializer):
+            parent = serializers.SlugRelatedField(
+                allow_null=False, default=getattr(Organization, 'objects').get(name='ROOT'),
+                queryset=getattr(Organization, 'objects').filter(deleted=False),
+                slug_field='name'
+            )
+            parent_caption = serializers.SlugRelatedField(
+                read_only=True,
+                source='parent',
+                slug_field='caption'
+            )
+
+            @staticmethod
+            def validate_parent(value):
+                root = getattr(Organization, 'objects').get(name='ROOT')
+
+                checked = set()
+                cur = value
+
+                while cur is not None and cur.id not in checked:
+                    if cur.id == root.id:
+                        return value
+                    checked.add(cur.id)
+                    cur = cur.parent
+
+                raise serializers.ValidationError('Organization unreachable.')
+
+            class Meta:
+                model = Organization
+                exclude = ('id', 'categories', )
+                read_only_fields = ('number_organizations',
+                                    'number_students',
+                                    'number_teachers',
+                                    'number_admins',
+                                    'number_course_meta',
+                                    'number_courses',
+                                    'number_course_groups',
+                                    'number_categories',
+                                    'number_problems',
+                                    'creator', 'create_time', 'updater', 'update_time')
+
+        class InstanceAdmin(serializers.ModelSerializer):
+            parent = serializers.SlugRelatedField(
+                allow_null=False, default=getattr(Organization, 'objects').get(name='ROOT'),
+                queryset=getattr(Organization, 'objects').filter(deleted=False),
+                slug_field='name'
+            )
+            parent_caption = serializers.SlugRelatedField(
+                read_only=True,
+                source='parent',
+                slug_field='caption'
+            )
+
+            def validate_parent(self, value):
+                root = getattr(Organization, 'objects').get(name='ROOT')
+
+                checked = set()
+                cur = value
+                checked.add(self.instance.id)
+
+                while cur is not None and cur.id not in checked:
+                    if cur.id == root.id:
+                        return value
+                    checked.add(cur.id)
+                    cur = cur.parent
+
+                raise serializers.ValidationError('Organization unreachable.')
+
+            class Meta:
+                model = Organization
+                exclude = ('id', 'categories', )
+                read_only_fields = ('name',
+                                    'number_organizations',
+                                    'number_students',
+                                    'number_teachers',
+                                    'number_admins',
+                                    'number_course_meta',
+                                    'number_courses',
+                                    'number_course_groups',
+                                    'number_categories',
+                                    'number_problems',
+                                    'creator', 'create_time', 'updater', 'update_time')

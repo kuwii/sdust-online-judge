@@ -88,6 +88,11 @@ class UpdateResourceMixin(mixins.UpdateModelMixin):
         extra_data['update_time'] = timezone.now()
         return super().update(request, *args, **kwargs)
 
+    def perform_update(self, serializer):
+        extra_data = getattr(self, 'extra_data')
+        instance = serializer.save(**extra_data)
+        return instance
+
 
 class NestedMixin(object):
     parent_queryset = None

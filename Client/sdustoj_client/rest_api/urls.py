@@ -1,6 +1,7 @@
 from rest_framework import routers
 
 from .views import PersonalViewSets, UserViewSets
+from .views import OrganizationViewSets
 
 
 admin_router = routers.DefaultRouter()
@@ -17,6 +18,11 @@ admin_router.register(
     r'users', UserViewSets.UserList.UserAdminViewSet, base_name='admin-user')
 admin_router.register(
     r'users', UserViewSets.UserInstance.UserAdminViewSet, base_name='admin-user')
+admin_router.register(
+    r'organizations', OrganizationViewSets.OrganizationList.OrganizationAdminViewSet, base_name='admin-organization')
+admin_router.register(
+    r'organizations', OrganizationViewSets.OrganizationInstance.OrganizationAdminViewSet, base_name='admin-organization')
+
 
 admin_patterns = []
 admin_patterns += admin_router.urls
