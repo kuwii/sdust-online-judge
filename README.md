@@ -1,6 +1,8 @@
 # SDUST Online Judge
 
-基于Django的程序在线评测系统。
+毕设项目，基于Django的程序在线评测系统。
+
+**此处已停止继续开发，请移步https://github.com/HeerKirov/sdust-online-judge**
 
 ## 功能 & 特点
 
